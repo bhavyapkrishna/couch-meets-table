@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
-
-  const [backend, setBackend] = useState([{}]);
-
-  useEffect(() => {
-    fetch("/").then(
-      response => response.json()
-    ).then(
-      data => {
-        setBackend(data);
-      }
-    )
-
-  }, [])
   return (
-    <div>
-
-      {(typeof backend.text === 'undefined') ? (
-        <p>Loading...</p>
-      ) : 
-      (backend.text.map((word, i) => (
-        <p key={i}>{word}</p>
-
-      )))}
-    </div>
-  )
+      <Router>
+          <Routes>
+              <Route path="/home"></Route>
+              <Route path="/" element={<LoginPage />} />
+          </Routes>
+      </Router>
+  );
 }
 
-export default App
+export default App;
