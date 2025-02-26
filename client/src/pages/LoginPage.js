@@ -9,3 +9,5 @@ function LoginPage()
         navigate("/home");
     }
 }
+
+export default LoginPage;
