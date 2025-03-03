@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const questions = [
   {text: "When do you usually wake up?",
@@ -16,6 +17,7 @@ const questions = [
 ];
 
 const QuizPage = () => {
+  const navigate = useNavigate();
   const [responses, setResponses] = useState(
     questions.map(() => ({ self: 3, ideal: 3, important: false }))
   );

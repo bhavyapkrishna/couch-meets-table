@@ -19,7 +19,7 @@ const LoginPage = () => {
             alert("Please enter a password")
             return;
         }
-        navigate("/quiz");
+        navigate("/profile");
     };
 
     const setPasswordVisible = () => {

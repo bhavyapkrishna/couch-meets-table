@@ -1,14 +1,15 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 
-const ProfilePage = () => (
-  <Card className="m-10 p-5 w-96">
-    <CardContent>
-      <h2 className="text-xl font-bold">Mikayla, 19</h2>
-      <p>Major: Bio, Pre-Med</p>
-      <p>Wakes up at: 8:00 AM</p>
-      <p>Messiness: Very Clean</p>
-    </CardContent>
-  </Card>
-);
+const ProfilePage = () => {
+  return(
+    <div className="container-fluid custom-bg vh-100 d-flex flex-column justify-content-start pt-5">
+      <Navbar />
+      <div className="card p-4 text-center mt-5 border-0 custom-bg">
+        <h1 className="h3 custom-txt">Log In</h1>
+      </div>
+    </div>
+  );
+};
 
 export default ProfilePage;
