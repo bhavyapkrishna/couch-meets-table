@@ -15,7 +15,7 @@ const LoginPage = () => {
             alert("Please enter a valid CWRU email address")
             return;
         }
-        navigate("/");
+        navigate("/QuizPage");
     };
 
     const setPasswordVisible = () => {
