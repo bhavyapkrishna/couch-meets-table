@@ -15,7 +15,11 @@ const LoginPage = () => {
             alert("Please enter a valid CWRU email address")
             return;
         }
-        navigate("/QuizPage");
+        if(!password) {
+            alert("Please enter a password")
+            return;
+        }
+        navigate("/quiz");
     };
 
     const setPasswordVisible = () => {
