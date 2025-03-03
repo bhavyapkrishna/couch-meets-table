@@ -1,81 +1,99 @@
 import {useState} from "react";
 
 const questions = [
-  "When do you usually wake up?",
-  "When do you usually sleep?",
-  "How quiet would you like your room to be?",
-  "How clean would you like your room to be?",
-  "How often do you have guests?",
-  "How often will you be in your room?",
-  "How often do you go out?",
+  {text: "When do you usually wake up?",
+    labels: ["Early", "", "Average","", "Late"]},
+  {text: "When do you usually sleep?",
+    labels: ["Early", "", "Average","", "Late"]},
+  {text: "How quiet would you like your room to be?",
+    labels: ["Silent", "", "Average","", "Lively"]},
+  {text: "How clean would you like your room to be?",
+    labels: ["Clean", "", "Lived-in","", "Messy"]},
+  {text: "How often do you have guests?",
+    labels: ["Rarely", "", "Sometimes","", "Always"]},
+  {text: "How often will you be in your room?",
+    labels: ["Rarely", "", "Sometimes","", "Always"]},
 ];
 
 const QuizPage = () => {
-    const [responses, setResponses] = useState(
-        questions.map(() => ({ self: 3, ideal: 3, important: false }))
-    );
-    const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [responses, setResponses] = useState(
+    questions.map(() => ({ self: 3, ideal: 3, important: false }))
+  );
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
-    const handleChange = (type, value) => {
-        const updatedResponses = [...responses];
-        updatedResponses[currentQuestion][type] = value;
-        setResponses(updatedResponses);
-    };
+  const handleChange = (type, value) => {
+    const updatedResponses = [...responses];
+    updatedResponses[currentQuestion][type] = value;
+    setResponses(updatedResponses);
+  };
 
-    const nextQuestion = () => {
-        if (currentQuestion < questions.length - 1) {
-            setCurrentQuestion(currentQuestion + 1);
-        } else {
-            alert("Quiz completed!");
-        }
-    };
+  const nextQuestion = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      navigate("/profile");
+    }
+  };
 
-    const prevQuestion = () => {
-        if (currentQuestion > 0) {
-            setCurrentQuestion(currentQuestion - 1);
-        }
-    };
+  const prevQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
 
-    return (
-        <div className="container-fluid vh-100 d-flex flex-column align-items-center pt-5">
-            <h1 className="h3 custom-txt">Roommate Quiz</h1>
-            <p>{questions[currentQuestion]}</p>
+  return (
+    <div className="container-fluid vh-100 d-flex flex-column align-items-center pt-5">
+      <h1 className="h3 custom-txt">Roommate Quiz</h1>
+      <p> Question {currentQuestion+1}: {questions[currentQuestion].text}</p>
 
-            <label className="mt-3">Your preference (1-5): {responses[currentQuestion].self}</label>
+      <p>Your preference: </p>
+      <div className="card p-4 text-center border-0 custom-bg flex-row justify-content-center">
+        {questions[currentQuestion].labels.map((label, index) => (
+          <div key={index} className="text-center mx-4">
             <input
-                type="range"
-                min="1"
-                max="5"
-                value={responses[currentQuestion].self}
-                onChange={(e) => handleChange("self", Number(e.target.value))}
-                className="w-50"
+              type="radio"
+              name="self"
+              value={index + 1}
+              checked={responses[currentQuestion].self === index + 1}
+              onChange={() => handleChange("self", index + 1)}
             />
+            <div className="mt-1">{label && <small>{label}</small>}</div>
+          </div>
+        ))}
+      </div>
 
-            <label className="d-block mt-3">Ideal roommate’s preference (1-5): {responses[currentQuestion].ideal}</label>
+      <p>Ideal roommate's preference: </p>
+      <div className="card p-4 text-center border-0 custom-bg flex-row justify-content-center">
+        {questions[currentQuestion].labels.map((label, index) => (
+          <div key={index} className="text-center mx-4">
             <input
-                type="range"
-                min="1"
-                max="5"
-                value={responses[currentQuestion].ideal}
-                onChange={(e) => handleChange("ideal", Number(e.target.value))}
-                className="w-50"
+              type="radio"
+              name="ideal"
+              value={index + 1}
+              checked={responses[currentQuestion].ideal === index + 1}
+              onChange={() => handleChange("ideal", index + 1)}
             />
+            <div className="mt-1">{label && <small>{label}</small>}</div>
+          </div>
+        ))}
+      </div>
 
-            <label className="mt-3">
-                <input
-                    type="checkbox"
-                    checked={responses[currentQuestion].important}
-                    onChange={(e) => handleChange("important", e.target.checked)}
-                />
-                This preference is important to me
-            </label>
+      <label className="mt-3">
+        <input
+          type="checkbox"
+          checked={responses[currentQuestion].important}
+          onChange={(e) => handleChange("important", e.target.checked)}
+        />
+        This preference is important to me
+      </label>
 
-            <div>
-                {currentQuestion > 0 && <Button onClick={prevQuestion}>Back</Button>}
-                <Button onClick={nextQuestion}>{currentQuestion === questions.length - 1 ? "Finish" : "Next"}</Button>
-            </div>
-        </div>
-    );
+      <div>
+        {currentQuestion > 0 && <button onClick={prevQuestion} className="custom-btn">Back</button>}
+        <button onClick={nextQuestion} className="custom-btn">{currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>
+
+      </div>
+    </div>
+  );
 };
 
 export default QuizPage;
