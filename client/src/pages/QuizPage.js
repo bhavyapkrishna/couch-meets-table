@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 
 const questions = [
   "When do you usually wake up?",
