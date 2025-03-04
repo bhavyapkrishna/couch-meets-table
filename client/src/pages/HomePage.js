@@ -1,9 +1,20 @@
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../components/Navbar";
+import {useContext} from "react";
+import {UserContext} from "../UserContext";
 
 export default function HomePage()
 {
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const handleLogin = () =>
+    {
+        setUser("AHAH");
+        navigate("/login");
+    }
+
     return (
         <div className="container-fluid custom-bg vh-100 d-flex flex-column justify-content-start pt-5">
             <Navbar />
@@ -16,7 +27,7 @@ export default function HomePage()
             {/*Start button*/}
             <div className="mt-3">
                 <Link to="/quiz">
-                    <button className="custom-btn">Start</button>
+                    <button onClick={handleLogin} className="custom-btn">Start</button>
                 </Link>
             </div>
         </div>
