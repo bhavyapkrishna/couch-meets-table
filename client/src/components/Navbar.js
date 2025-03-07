@@ -21,7 +21,7 @@ function Navbar() {
                             </Link>
                         </>
                     )}
-                    {["/swiping", "/profile"].includes(pathname) && (
+                    {["/", "/login", "/quiz"].includes(pathname) && (
                         <>
                             <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>
                                 Log In
