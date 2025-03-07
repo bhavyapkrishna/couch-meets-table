@@ -18,9 +18,9 @@ const CreateProfilePage = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name == "dorms") {
+        if (name === "dorms") {
             const dorms = Array.from(e.target.selectedOptions, option => option.value);
-            setProfile((prev) => ({ ... prev, dorms: dorms }));
+            setProfile((prev) => ({ ...prev, dorms: dorms }));
         } else {
             setProfile((prev) => ({ ...prev, [name]: value }));
         }

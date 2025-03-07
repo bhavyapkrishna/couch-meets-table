@@ -7,6 +7,9 @@ import { UserContext } from "../UserProvider";
 
 const ProfilePage = () => {
     const { user } = useContext(UserContext);
+
+    console.log("User data:", user);
+    console.log("Quiz responses:", user.quizResponse);
     
     if (!user || !user.profile || !user.quizResponse) {
         return (
@@ -49,13 +52,13 @@ const ProfilePage = () => {
 
                             <hr />
 
-                            <p><strong>Wakes up at:</strong> {user.quizResponse[0]?.self}</p>
-                            <p><strong>Sleeps at:</strong> {user.quizResponse[1]?.self}</p>
-                            <p><strong>Noise Level:</strong> {user.quizResponse[2]?.self}</p>
-                            <p><strong>Messiness:</strong> {user.quizResponse[3]?.self}</p>
+                            <p><strong>Wakes up at:</strong> {user.quizResponse[0]?.self?.label || "Can't find"}</p>
+                            <p><strong>Sleeps at:</strong> {user.quizResponse[1]?.self?.label || "Can't find"}</p>
+                            <p><strong>Noise Level:</strong> {user.quizResponse[2]?.self?.label || "Can't find"}</p>
+                            <p><strong>Messiness:</strong> {user.quizResponse[3]?.self?.label || "Can't find"}</p>
 
-                            <p><strong>Guests in Room:</strong> {user.quizResponse[4]?.self}</p>
-                            <p><strong>In Room:</strong> {user.quizResponse[5]?.self}</p>
+                            <p><strong>Guests in Room:</strong> {user.quizResponse[4]?.self?.label || "Can't find"}</p>
+                            <p><strong>In Room:</strong> {user.quizResponse[5]?.self?.label || "Can't find"}</p>
                         </Col>
                     </Row>
                 </Card>
