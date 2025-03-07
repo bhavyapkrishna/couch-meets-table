@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import {UserContext} from "../UserContext";
+import {UserContext} from "../UserProvider";
 
 const LoginPage = () => {
     const navigate = useNavigate();

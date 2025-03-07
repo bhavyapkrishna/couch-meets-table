@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { UserContext } from "../UserProvider";
 
 const questions = [
   {text: "When do you usually wake up?",
@@ -19,6 +20,7 @@ const questions = [
 
 const QuizPage = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
   const [responses, setResponses] = useState(
     questions.map(() => ({ self: 3, ideal: 3, important: false }))
   );
@@ -34,7 +36,8 @@ const QuizPage = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      navigate("/signup");
+      setUser((prev) => ({...prev, quizResponses: responses}));
+      navigate("/createProfile");
     }
   };
 
