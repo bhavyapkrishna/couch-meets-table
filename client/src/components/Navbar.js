@@ -2,6 +2,7 @@ import {Link, useLocation} from "react-router-dom";
 
 function Navbar() {
     const location = useLocation();
+    const { pathname } = location;
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark custom-sec-bg fixed-top py-3">
@@ -10,15 +11,23 @@ function Navbar() {
                     Couch Meets Table
                 </Link>
                 <div className="ms-auto me-3 d-flex gap-3">
-                    <Link to="/swiping" className={`text-white text-decoration-none ${location.pathname === "/swiping" ? "fw-bold border-bottom border-white" : ""}`}>
-                        Swiping
-                    </Link>
-                    <Link to="/profile" className={`text-white text-decoration-none ${location.pathname === "/profile" ? "fw-bold border-bottom border-white" : ""}`}>
-                        Profile
-                    </Link>
-                    <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>
-                        Log In
-                    </Link>
+                    {["/swiping", "/profile"].includes(pathname) && (
+                        <>
+                            <Link to="/swiping" className={`text-white text-decoration-none ${location.pathname === "/swiping" ? "fw-bold border-bottom border-white" : ""}`}>
+                                Swiping
+                            </Link>
+                            <Link to="/profile" className={`text-white text-decoration-none ${location.pathname === "/profile" ? "fw-bold border-bottom border-white" : ""}`}>
+                                Profile
+                            </Link>
+                        </>
+                    )}
+                    {["/swiping", "/profile"].includes(pathname) && (
+                        <>
+                            <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>
+                                Log In
+                            </Link>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>
