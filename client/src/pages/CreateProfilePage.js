@@ -29,7 +29,7 @@ const CreateProfilePage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setUser((prev) => ({ ...prev, profile }));
-        navigate("/profile");
+        navigate("/signup");
     };
 
     const dormOptions = {
