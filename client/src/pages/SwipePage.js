@@ -4,7 +4,6 @@ import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { FaTimes, FaCheck } from "react-icons/fa";
 
-// Profile Data Array
 const profiles = [
     {
         id: 1,
@@ -43,77 +42,79 @@ const profiles = [
 ];
 
 const SwipingPage = () => {
-    // Track the current profile index
     const [currentIndex, setCurrentIndex] = useState(0);
-
-    // Handle Swiping (Next Profile)
     const handleSwipe = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % profiles.length);
     };
 
-    // Get the current profile
     const profile = profiles[currentIndex];
 
     return (
         <div className="d-flex flex-column min-vh-100">
             <Navbar />
 
-            {/* Swiping Container */}
             <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
                 <Row className="w-75 align-items-center">
 
                     {/* Reject Button */}
-                    <Col xs={2} className="text-center">
-                        <Button variant="secondary" className="rounded-circle p-4" onClick={handleSwipe}>
-                            <FaTimes size={32} />
+                    <Col xs={2} md={1} className="text-center">
+                        <Button variant="secondary" className="rounded-circle p-3" onClick={handleSwipe}>
+                            <FaTimes size={24} />
                         </Button>
                     </Col>
 
                     {/* Profile Card */}
-                    <Col xs={8}>
-                        <Card className="p-4 border-0 shadow d-flex flex-row align-items-center">
-                            {/* Image Section */}
-                            <Col md={5} className="text-center">
-                                <Image
-                                    src={profile.image}
-                                    rounded
-                                    fluid
-                                    className="border border-primary p-1"
-                                    style={{ maxWidth: "300px", height: "auto", borderRadius: "10px" }}
-                                    alt="Profile"
-                                />
-                                <p className="text-muted mt-2">matched • {profile.id}</p>
-                            </Col>
+                    <Col xs={8} md={10}>
+                        <Card className="p-4 border-0 shadow">
+                            <Card.Body>
+                                <Row className="d-flex flex-column flex-md-row align-items-center">
 
-                            {/* Info Section */}
-                            <Col md={7}>
-                                <h3><strong>{profile.name}, {profile.age}</strong></h3>
-                                <h5 className="text-primary"><strong>{profile.matchPercentage} Match</strong></h5>
+                                    {/* Image Section */}
+                                    <Col xs={12} md={5} className="text-center">
+                                        <Image
+                                            src={profile.image}
+                                            rounded
+                                            fluid
+                                            className="border border-primary p-1"
+                                            style={{ maxWidth: "300px", height: "auto", borderRadius: "10px" }}
+                                            alt="Profile"
+                                        />
+                                        <p className="text-muted mt-2">matched • {profile.id}</p>
+                                    </Col>
 
-                                <p><strong>Grade:</strong> {profile.grade}</p>
-                                <p><strong>Major:</strong> {profile.major}</p>
-                                <p><strong>Dorm Preference:</strong> {profile.dorm}</p>
+                                    {/* Info Section */}
+                                    <Col xs={12} md={7} className="mt-3 mt-md-0">
+                                        <h3><strong>{profile.name}, {profile.age}</strong></h3>
+                                        <h5 className="text-primary"><strong>{profile.matchPercentage} Match</strong></h5>
 
-                                <hr />
+                                        <p><strong>Grade:</strong> {profile.grade}</p>
+                                        <p><strong>Major:</strong> {profile.major}</p>
+                                        <p><strong>Dorm Preference:</strong> {profile.dorm}</p>
 
-                                <p><strong>Wakes up at:</strong> {profile.wakesUp}</p>
-                                <p><strong>Sleeps at:</strong> {profile.sleepsAt}</p>
-                                <p><strong>Noise Level:</strong> {profile.noiseLevel}</p>
-                                <p><strong>Messiness:</strong> {profile.messiness}</p>
+                                        <hr />
 
-                                <p><strong>Guests in Room:</strong> {profile.guests}</p>
-                                <p><strong>In Room:</strong> {profile.inRoom}</p>
-                                <p><strong>Goes Out:</strong> {profile.goesOut}</p>
-                            </Col>
+                                        <p><strong>Wakes up at:</strong> {profile.wakesUp}</p>
+                                        <p><strong>Sleeps at:</strong> {profile.sleepsAt}</p>
+                                        <p><strong>Noise Level:</strong> {profile.noiseLevel}</p>
+                                        <p><strong>Messiness:</strong> {profile.messiness}</p>
+
+                                        <p><strong>Guests in Room:</strong> {profile.guests}</p>
+                                        <p><strong>In Room:</strong> {profile.inRoom}</p>
+                                        <p><strong>Goes Out:</strong> {profile.goesOut}</p>
+                                    </Col>
+
+                                </Row>
+                            </Card.Body>
                         </Card>
                     </Col>
 
                     {/* Accept Button */}
-                    <Col xs={2} className="text-center">
-                        <Button variant="primary" className="rounded-circle p-4" onClick={handleSwipe}>
-                            <FaCheck size={32} />
+                    <Col xs={2} md={1} className="text-center">
+                        <Button variant="primary" className="rounded-circle p-3" onClick={handleSwipe}>
+                            <FaCheck size={24} />
                         </Button>
                     </Col>
+
                 </Row>
             </Container>
         </div>
