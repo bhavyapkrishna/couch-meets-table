@@ -6,12 +6,12 @@ import {UserContext} from "../UserContext";
 
 export default function HomePage()
 {
-    const { setUser } = useContext(UserContext);
+    // const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleLogin = () =>
     {
-        setUser("AHAH");
+        // setUser("AHAH");
         navigate("/login");
     }
 

@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import QuizPage from "./pages/QuizPage";
 import ProfilePage from "./pages/ProfilePage";
+import SwipePage from "./pages/SwipePage";
 import {UserProvider} from "./UserContext";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/quiz" element={<QuizPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/swiping" element={<SwipePage />}></Route>
               </Routes>
           </Router>
       </UserProvider>

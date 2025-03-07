@@ -57,7 +57,7 @@ const LoginPage = () => {
             <div className="mt-3">
                 <button onClick={handleLogin} className="custom-btn">Log In</button>
             </div>
-            <h1>hello, {user || "Guest"}!</h1>
+            {/*<h1>hello, {user || "Guest"}!</h1>*/}
         </div>
     )
 }

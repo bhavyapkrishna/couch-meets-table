@@ -9,7 +9,13 @@ function Navbar() {
                 <Link to="/" className="navbar-brand ms-3 ">
                     Couch Meets Table
                 </Link>
-                <div className="ms-auto me-3">
+                <div className="ms-auto me-3 d-flex gap-3">
+                    <Link to="/swiping" className={`text-white text-decoration-none ${location.pathname === "/swiping" ? "fw-bold border-bottom border-white" : ""}`}>
+                        Swiping
+                    </Link>
+                    <Link to="/profile" className={`text-white text-decoration-none ${location.pathname === "/profile" ? "fw-bold border-bottom border-white" : ""}`}>
+                        Profile
+                    </Link>
                     <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>
                         Log In
                     </Link>
