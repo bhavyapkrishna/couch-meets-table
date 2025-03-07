@@ -1,6 +1,8 @@
+# example class of a profile
 class Person:
     features = []
 
+    # initializing the person with their trait preference on a 1-5 scale
     def __init__(self, wu, st, q, c, g, b):
         self.features = []
         self.features.append(wu)
@@ -10,13 +12,18 @@ class Person:
         self.features.append(g)
         self.features.append(b)
         self.numberOfFeatures = len(self.features)
+    def determineCompatability(self, person2):
+        currentCompatability = 0
+        for i in range(self.numberOfFeatures):
+            difference = abs(self.features[i] - person2.features[i])
+            currentCompatability = currentCompatability + (difference/5) * (1/self.numberOfFeatures)
+        currentCompatability = (1 - currentCompatability)*100
+        return(currentCompatability)
 
 person1 = Person(3, 2, 5, 3, 1, 0)
 person2 = Person(4, 2, 5, 3, 1, 0)
-currentCompatability = 0
-for i in range(person1.numberOfFeatures):
-    difference = abs(person1.features[i] - person2.features[i])
-    print(difference)
-    currentCompatability = currentCompatability + (difference/5) * (1/person1.numberOfFeatures)
-currentCompatability = (1 - currentCompatability)*100
-print(currentCompatability)
+
+print(person1.determineCompatability(person2))
+
+
+
