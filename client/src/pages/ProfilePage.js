@@ -1,10 +1,25 @@
-import React from "react";
+import {useContext} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import profilePic from "../assets/images/SampleProfilePic.webp";
+import { UserContext } from "../UserProvider";
 
 const ProfilePage = () => {
+    const { user } = useContext(UserContext);
+
+    console.log("User data:", user);
+    console.log("Quiz responses:", user.quizResponse);
+    
+    if (!user || !user.profile || !user.quizResponse) {
+        return (
+            <div className="container">
+                <h2>Loading...</h2>
+                <p>Your profile is still being set up. Please try again later.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="min-vh-100 d-flex flex-column overflow-hidden">
             <Navbar />
@@ -29,24 +44,21 @@ const ProfilePage = () => {
                         {/* Info */}
                         {/*TEMP*/}
                         <Col md={8}>
-                            <h3><strong>Mikayla, 19</strong></h3>
-                            <p><strong>Grade:</strong> Sophomore</p>
-                            <p><strong>Major:</strong> Bio, Pre-Med</p>
-                            <p><strong>Dorm Preference:</strong> Staley, Tippit</p>
+                            <h3><strong>{user.profile.name}, {user.profile.age}</strong></h3>
+                            <p><strong>Grade:</strong> {user.profile.grade}</p>
+                            <p><strong>Major:</strong> {user.profile.major}</p>
+                            <p><strong>Dorm Preference:</strong> {user.profile.dorms}</p>
+                            <p><strong>Bio:</strong> {user.profile.bio}</p>
 
                             <hr />
 
-                            <p><strong>Wakes up at:</strong> 6:00 AM</p>
-                            <p><strong>Sleeps at:</strong> 10:00 PM</p>
-                            <p><strong>Noise Level:</strong> Very quiet</p>
-                            <p><strong>Messiness:</strong> Very clean</p>
+                            <p><strong>Wakes up at:</strong> {user.quizResponse[0]?.self?.label || "Can't find"}</p>
+                            <p><strong>Sleeps at:</strong> {user.quizResponse[1]?.self?.label || "Can't find"}</p>
+                            <p><strong>Noise Level:</strong> {user.quizResponse[2]?.self?.label || "Can't find"}</p>
+                            <p><strong>Messiness:</strong> {user.quizResponse[3]?.self?.label || "Can't find"}</p>
 
-                            <p><strong>Guests in Room:</strong> Never</p>
-                            <p><strong>In Room:</strong> Always</p>
-                            <p><strong>Goes Out:</strong> Never</p>
-
-                            <p><strong>Study Habits:</strong> Every night, in room</p>
-                            <p><strong>Politics:</strong> Liberal</p>
+                            <p><strong>Guests in Room:</strong> {user.quizResponse[4]?.self?.label || "Can't find"}</p>
+                            <p><strong>In Room:</strong> {user.quizResponse[5]?.self?.label || "Can't find"}</p>
                         </Col>
                     </Row>
                 </Card>

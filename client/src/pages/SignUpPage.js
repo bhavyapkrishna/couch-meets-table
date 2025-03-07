@@ -4,20 +4,25 @@ import Navbar from "../components/Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {UserContext} from "../UserProvider";
 
-const LoginPage = () => {
+const SignUpPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordCheck, setPasswordCheck] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const { user } = useContext(UserContext);
 
-    const handleLogin = () =>
+    const handleSignUp = () =>
     {
         if(!email.endsWith("@case.edu")) {
             alert("Please enter a valid CWRU email address")
             return;
         }
 
+        if(password != passwordCheck) {
+            alert("Passwords do not match")
+            return;
+        }
         navigate("/profile");
     };
 
@@ -30,7 +35,7 @@ const LoginPage = () => {
             <Navbar />
             {/*Content*/}
             <div className="card p-4 text-center mt-5 border-0 custom-bg">
-                <h1 className="h3 custom-txt">Log In</h1>
+                <h1 className="h3 custom-txt">Create Account</h1>
                 <input 
                     type="text" 
                     placeholder="CWRU Email" 
@@ -45,6 +50,13 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+                <input 
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm Password" 
+                    value={passwordCheck}
+                    onChange={(e) => setPasswordCheck(e.target.value)}
+                    required
+                />
                 <span
                     onMouseDown={setPasswordVisible}
                     onMouseUp={setPasswordVisible}
@@ -54,11 +66,10 @@ const LoginPage = () => {
                 </span>
             </div>
             <div className="mt-3">
-                <button onClick={handleLogin} className="custom-btn">Log In</button>
+                <button onClick={handleSignUp} className="custom-btn">Create Account</button>
             </div>
-            {/*<h1>hello, {user || "Guest"}!</h1>*/}
         </div>
     )
 }
 
-export default LoginPage;
+export default SignUpPage;
