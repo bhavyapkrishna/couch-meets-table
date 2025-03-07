@@ -5,17 +5,17 @@ import { UserContext } from "../UserProvider";
 
 const questions = [
   {text: "When do you usually wake up?",
-    labels: ["Early", "two", "Average","four", "Late"]},
+    labels: ["Early", "", "Average","", "Late"]},
   {text: "When do you usually sleep?",
-    labels: ["Early", "two", "Average","four", "Late"]},
+    labels: ["Early", "", "Average","", "Late"]},
   {text: "How quiet would you like your room to be?",
-    labels: ["Silent", "two", "Average","four", "Lively"]},
+    labels: ["Silent", "", "Average","", "Lively"]},
   {text: "How clean would you like your room to be?",
-    labels: ["Clean", "two", "Lived-in","four", "Messy"]},
+    labels: ["Clean", "", "Lived-in","", "Messy"]},
   {text: "How often do you have guests?",
-    labels: ["Rarely", "two", "Sometimes","four", "Always"]},
+    labels: ["Rarely", "", "Sometimes","", "Always"]},
   {text: "How often will you be in your room?",
-    labels: ["Rarely", "two", "Sometimes","four", "Always"]},
+    labels: ["Rarely", "", "Sometimes","", "Always"]},
 ];
 
 const QuizPage = () => {
