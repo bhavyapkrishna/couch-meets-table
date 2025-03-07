@@ -1,13 +1,15 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {UserContext} from "../UserContext";
 
 const LoginPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const { user } = useContext(UserContext);
 
     const handleLogin = () =>
     {
@@ -55,6 +57,7 @@ const LoginPage = () => {
             <div className="mt-3">
                 <button onClick={handleLogin} className="custom-btn">Log In</button>
             </div>
+            {/*<h1>hello, {user || "Guest"}!</h1>*/}
         </div>
     )
 }
