@@ -36,7 +36,7 @@ const QuizPage = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      setUser((prev) => ({...prev, quizResponses: responses}));
+      setUser((prev) => ({...prev, quizResponse: responses}));
       navigate("/createProfile");
     }
   };

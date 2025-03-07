@@ -1,8 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../components/Navbar";
-import {useContext} from "react";
-import {UserContext} from "../UserProvider";
 
 export default function HomePage()
 {
