@@ -18,6 +18,11 @@ const LoginPage = () => {
             return;
         }
 
+        if(!password) {
+            alert("Please enter a password")
+            return;
+        }
+
         navigate("/profile");
     };
 
