@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const questions = [
   {text: "When do you usually wake up?",
@@ -33,7 +34,7 @@ const QuizPage = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      navigate("/profile");
+      navigate("/signup");
     }
   };
 
@@ -45,54 +46,57 @@ const QuizPage = () => {
 
   return (
     <div className="container-fluid vh-100 d-flex flex-column align-items-center pt-5">
-      <h1 className="h3 custom-txt">Roommate Quiz</h1>
-      <p> Question {currentQuestion+1}: {questions[currentQuestion].text}</p>
+      <Navbar />
+      <div className="card p-4 text-center mt-5 border-0 custom-bg">
+        <h1 className="h3 custom-txt">Roommate Quiz</h1>
+        <p> Question {currentQuestion+1}: {questions[currentQuestion].text}</p>
 
-      <p>Your preference: </p>
-      <div className="card p-4 text-center border-0 custom-bg flex-row justify-content-center">
-        {questions[currentQuestion].labels.map((label, index) => (
-          <div key={index} className="text-center mx-4">
-            <input
-              type="radio"
-              name="self"
-              value={index + 1}
-              checked={responses[currentQuestion].self === index + 1}
-              onChange={() => handleChange("self", index + 1)}
-            />
-            <div className="mt-1">{label && <small>{label}</small>}</div>
-          </div>
-        ))}
-      </div>
+        <p>Your preference: </p>
+        <div className="card p-4 text-center border-0 custom-bg flex-row justify-content-center">
+          {questions[currentQuestion].labels.map((label, index) => (
+            <div key={index} className="text-center mx-4">
+              <input
+                type="radio"
+                name="self"
+                value={index + 1}
+                checked={responses[currentQuestion].self === index + 1}
+                onChange={() => handleChange("self", index + 1)}
+              />
+              <div className="mt-1">{label && <small>{label}</small>}</div>
+            </div>
+          ))}
+        </div>
 
-      <p>Ideal roommate's preference: </p>
-      <div className="card p-4 text-center border-0 custom-bg flex-row justify-content-center">
-        {questions[currentQuestion].labels.map((label, index) => (
-          <div key={index} className="text-center mx-4">
-            <input
-              type="radio"
-              name="ideal"
-              value={index + 1}
-              checked={responses[currentQuestion].ideal === index + 1}
-              onChange={() => handleChange("ideal", index + 1)}
-            />
-            <div className="mt-1">{label && <small>{label}</small>}</div>
-          </div>
-        ))}
-      </div>
+        <p>Ideal roommate's preference: </p>
+        <div className="card p-4 text-center border-0 custom-bg flex-row justify-content-center">
+          {questions[currentQuestion].labels.map((label, index) => (
+            <div key={index} className="text-center mx-4">
+              <input
+                type="radio"
+                name="ideal"
+                value={index + 1}
+                checked={responses[currentQuestion].ideal === index + 1}
+                onChange={() => handleChange("ideal", index + 1)}
+              />
+              <div className="mt-1">{label && <small>{label}</small>}</div>
+            </div>
+          ))}
+        </div>
 
-      <label className="mt-3">
-        <input
-          type="checkbox"
-          checked={responses[currentQuestion].important}
-          onChange={(e) => handleChange("important", e.target.checked)}
-        />
-        This preference is important to me
-      </label>
+        <label className="mt-3">
+          <input
+            type="checkbox"
+            checked={responses[currentQuestion].important}
+            onChange={(e) => handleChange("important", e.target.checked)}
+          />
+          This preference is important to me
+        </label>
 
-      <div>
-        {currentQuestion > 0 && <button onClick={prevQuestion} className="custom-btn">Back</button>}
-        <button onClick={nextQuestion} className="custom-btn">{currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>
+        <div>
+          {currentQuestion > 0 && <button onClick={prevQuestion} className="custom-btn">Back</button>}
+          <button onClick={nextQuestion} className="custom-btn">{currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>
 
+        </div>
       </div>
     </div>
   );
