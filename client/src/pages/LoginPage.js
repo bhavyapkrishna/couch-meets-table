@@ -17,10 +17,7 @@ const LoginPage = () => {
             alert("Please enter a valid CWRU email address")
             return;
         }
-        if(!password) {
-            alert("Please enter a password")
-            return;
-        }
+
         navigate("/profile");
     };
 
@@ -39,12 +36,14 @@ const LoginPage = () => {
                     placeholder="CWRU Email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                 />
                 <input 
                     type={showPassword ? "text" : "password"}
                     placeholder="Password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
                 <span
                     onMouseDown={setPasswordVisible}

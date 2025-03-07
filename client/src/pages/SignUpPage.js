@@ -18,10 +18,7 @@ const SignUpPage = () => {
             alert("Please enter a valid CWRU email address")
             return;
         }
-        if(!password) {
-            alert("Please enter a password")
-            return;
-        }
+
         if(password != passwordCheck) {
             alert("Passwords do not match")
             return;
@@ -44,18 +41,21 @@ const SignUpPage = () => {
                     placeholder="CWRU Email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                 />
                 <input 
                     type={showPassword ? "text" : "password"}
                     placeholder="Password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
                 <input 
                     type={showPassword ? "text" : "password"}
                     placeholder="Confirm Password" 
                     value={passwordCheck}
                     onChange={(e) => setPasswordCheck(e.target.value)}
+                    required
                 />
                 <span
                     onMouseDown={setPasswordVisible}
