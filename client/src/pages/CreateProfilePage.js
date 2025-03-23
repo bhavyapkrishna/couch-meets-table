@@ -1,11 +1,12 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserProvider";
+import Select from "react-select";
 
 const CreateProfilePage = () => {
     const navigate = useNavigate();
     const { setUser } = useContext(UserContext);
-    
+
     const [profile, setProfile] = useState({
         name: "",
         age: "",
@@ -16,28 +17,45 @@ const CreateProfilePage = () => {
         profilePhoto: "",
     });
 
+    const [dormOptions, setDormOptions] = useState([]);
+
+    const dormsByGrade = {
+        Freshman: ["Juniper", "Clark"],
+        Sophomore: ["Noyes", "Alumni"],
+        Junior: ["Triangle", "Hazel"],
+        Senior: ["Triangle", "Hazel"],
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "dorms") {
-            const dorms = Array.from(e.target.selectedOptions, option => option.value);
-            setProfile((prev) => ({ ...prev, dorms: dorms }));
-        } else {
-            setProfile((prev) => ({ ...prev, [name]: value }));
-        }
+
+        setProfile((prev) => ({ ...prev, [name]: value }));
     };
+
+    const handleDormChange = (selectedOptions) => {
+        setProfile((prev) => ({
+            ...prev,
+            dorms: selectedOptions ? selectedOptions.map(option => option.value) : []
+        }))
+    };
+
+    const handleGradeChange = (e) => {
+        const selectedGrade = e.target.value;
+        setProfile((prev) => ({...prev, grade: selectedGrade }));
+
+        if (selectedGrade) {
+            const updatedDorms = dormsByGrade[selectedGrade];
+            setDormOptions(updatedDorms.map(dorm => ({value: dorm, label: dorm})));
+        } else {
+            setDormOptions([]);
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setUser((prev) => ({ ...prev, profile }));
         navigate("/signup");
     };
-
-    const dormOptions = {
-        Freshman: ["Juniper", "Clark"],
-        Sophomore: ["Noyes", "Alumni"],
-        Junior: ["Triangle", "Hazel"],
-        Senior: ["Triangle", "Hazel"],
-    }
 
     return (
         <div className="container">
@@ -50,7 +68,7 @@ const CreateProfilePage = () => {
                 <input type="number" name="age" value={profile.age} onChange={handleChange} required />
 
                 <label>Grade:</label>
-                <select name="grade" value={profile.grade} onChange={handleChange} required >
+                <select name="grade" value={profile.grade} onChange={handleGradeChange} required >
                     <option value="">Select Grade</option>
                     <option value="Freshman">Freshman</option>
                     <option value="Sophomore">Sophomore</option>
@@ -61,13 +79,23 @@ const CreateProfilePage = () => {
                 {profile.grade && (
                     <>
                         <label>Dorm Preference:</label>
-                        <select name="dorms" value={profile.dorms} onChange={handleChange} multiple required>
-                            {dormOptions[profile.grade].map((dorm, index) => (
-                                <option key={index} value={dorm}>
-                                    {dorm}
-                                </option>
-                            ))}
-                        </select>
+                        {/*<select name="dorms" value={profile.dorms} onChange={handleChange} multiple required>*/}
+                        {/*    {dormOptions[profile.grade].map((dorm, index) => (*/}
+                        {/*        <option key={index} value={dorm}>*/}
+                        {/*            {dorm}*/}
+                        {/*        </option>*/}
+                        {/*    ))}*/}
+                        {/*</select>*/}
+                        {/*multiselect react-select attempt*/}
+                        <Select
+                            isMulti
+                            name="dorms"
+                            options={dormOptions}
+                            value={dormOptions.filter(option => profile.dorms.includes(option.value))}
+                            onChange={handleDormChange}
+                            getOptionLabel={(e) => e.label}
+                            getOptionValue={(e) => e.value}
+                        />
                     </>
                 )}
 
