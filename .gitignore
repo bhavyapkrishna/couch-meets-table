@@ -40,3 +40,5 @@ coverage/
 
 # Miscellaneous
 *.pem
+
+server/venv/
