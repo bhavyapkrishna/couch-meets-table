@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "cmtserver",
-    'rest_framework'
+    'cmtserver',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "server.urls"
@@ -81,11 +83,11 @@ WSGI_APPLICATION = "server.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.mysql'),
-        'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),  # Default value if not in .env
-        'USER': os.getenv('DATABASE_USER', 'cmtuser'),     # Default value if not in .env
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_default_password'), # Default value
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),    # Default value
-        'PORT': os.getenv('DATABASE_PORT', '3306'),        # Default value
+        'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),  
+        'USER': os.getenv('DATABASE_USER', 'cmtuser'),     
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_default_password'), 
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),    
+        'PORT': os.getenv('DATABASE_PORT', '3306'),        
         'OPTIONS': {
             'charset': 'utf8mb4',
         },
@@ -133,4 +135,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+AUTH_USER_MODEL = 'cmtserver.CustomUser'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
