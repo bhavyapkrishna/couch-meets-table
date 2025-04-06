@@ -44,7 +44,7 @@ const ProfilePage = () => {
                         {/* Info */}
                         {/*TEMP*/}
                         <Col md={8}>
-                            <h3><strong>{user.profile.name}, {user.profile.age}</strong></h3>
+                            <h3><strong>{user.profile.first_name} {user.profile.last_name}, {user.profile.age}</strong></h3>
                             <p><strong>Grade:</strong> {user.profile.grade}</p>
                             <p><strong>Major:</strong> {user.profile.major}</p>
                             <p><strong>Dorm Preference:</strong> {user.profile.dorms}</p>

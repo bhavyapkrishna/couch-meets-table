@@ -12,17 +12,52 @@ const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { user } = useContext(UserContext);
 
-    const handleSignUp = () =>
-    {
-        if(!email.endsWith("@case.edu")) {
-            alert("Please enter a valid CWRU email address")
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+    
+        if (!email.endsWith("@case.edu")) {
+            alert("Please enter a valid CWRU email address");
             return;
         }
-
-        if(password != passwordCheck) {
-            alert("Passwords do not match")
+    
+        if (password !== passwordCheck) {
+            alert("Passwords do not match");
             return;
         }
+    
+        try {
+            const response = await fetch('http://localhost:8000/api/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Make sure headers are set correctly
+                },
+                body: JSON.stringify({
+                    'caseid': user.profile.caseid,
+                    'first_name': user.profile.first_name,
+                    'last_name': user.profile.last_name,
+                    'age': user.profile.age,
+                    'grade': user.profile.grade,
+                    'major': user.profile.major,
+                    'bio': user.profile.bio,
+                    'email': email,
+                    'password': password
+                }),
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                alert('User created successfully!');
+                console.log('Success:', data); // More detailed logging
+            } else {
+                const errorData = await response.json();
+                console.error('Error creating user:', errorData); // Log error data
+                alert('Error creating user: ' + (errorData.detail || 'Something went wrong'));
+            }
+        } catch (error) {
+            console.error('There was an error!', error);
+            alert('Error creating user.');
+        }
+    
         navigate("/profile");
     };
 
