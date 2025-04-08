@@ -24,12 +24,25 @@ const SignUpPage = () => {
             alert("Passwords do not match");
             return;
         }
-    
+
         try {
+            const labels = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
+            const resultsValues = user.quizResponse.map(q => q.self.value);
+            const idealValues = user.quizResponse.map(q => q.ideal.value);
+            const importantValues = user.quizResponse.map(q => q.important.value === undefined ? 0 : 1);
+
+            const results = Object.fromEntries(labels.map((label, index) => [label, resultsValues[index]]));
+            const ideal = Object.fromEntries(labels.map((label, index) => [label, idealValues[index]]));
+            const important = Object.fromEntries(labels.map((label, index) => [label, importantValues[index]]));
+
+            console.log("results: ", results)
+            console.log("preferences", ideal)
+            console.log("important", important)
+            
             const response = await fetch('http://localhost:8000/api/register/', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',  // Make sure headers are set correctly
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     'caseid': user.profile.caseid,
@@ -40,18 +53,21 @@ const SignUpPage = () => {
                     'major': user.profile.major,
                     'bio': user.profile.bio,
                     'email': email,
-                    'password': password
+                    'password': password,
+                    'results': results,
+                    'preferences': ideal,
+                    'important': important,
+                    'dorms': user.profile.dorms
                 }),
             });
     
             if (response.ok) {
                 const data = await response.json();
-                alert('User created successfully!');
-                console.log('Success:', data); // More detailed logging
+                console.log('Success:', data);
             } else {
                 const errorData = await response.json();
-                console.error('Error creating user:', errorData); // Log error data
-                alert('Error creating user: ' + (errorData.detail || 'Something went wrong'));
+                console.error('Error creating user:', errorData);
+                alert('Error creating user.');
             }
         } catch (error) {
             console.error('There was an error!', error);
