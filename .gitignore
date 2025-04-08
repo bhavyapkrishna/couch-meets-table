@@ -41,6 +41,6 @@ coverage/
 # Miscellaneous
 *.pem
 
-server/.venv/
+/server/.venv/
 
-cmtserver/migrations/
+/server/cmtserver/migrations/
