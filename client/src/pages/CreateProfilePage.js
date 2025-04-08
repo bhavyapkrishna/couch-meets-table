@@ -8,7 +8,9 @@ const CreateProfilePage = () => {
     const { setUser } = useContext(UserContext);
 
     const [profile, setProfile] = useState({
-        name: "",
+        caseid: "",
+        first_name: "",
+        last_name: "",
         age: "",
         grade: "",
         major: "",
@@ -61,8 +63,14 @@ const CreateProfilePage = () => {
         <div className="container">
             <h2>Create Profile</h2>
             <form onSubmit={handleSubmit}>
-                <label>Name:</label>
-                <input type="text" name="name" value={profile.name} onChange={handleChange} required />
+                <label>Case ID:</label>
+                <input type="text" name="caseid" value={profile.caseid} onChange={handleChange} required />
+
+                <label>First Name:</label>
+                <input type="text" name="first_name" value={profile.first_name} onChange={handleChange} required />
+
+                <label>Last Name:</label>
+                <input type="text" name="last_name" value={profile.last_name} onChange={handleChange} required />
 
                 <label>Age:</label>
                 <input type="number" name="age" value={profile.age} onChange={handleChange} required />

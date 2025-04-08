@@ -41,4 +41,11 @@ coverage/
 # Miscellaneous
 *.pem
 
-server/venv/
+server/.venv/
+.env
+
+server/cmtserver/__pycache__/
+
+server/cmtserver/migrations/
+
+.venv/
