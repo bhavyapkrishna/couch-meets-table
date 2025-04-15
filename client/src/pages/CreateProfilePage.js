@@ -22,10 +22,10 @@ const CreateProfilePage = () => {
     const [dormOptions, setDormOptions] = useState([]);
 
     const dormsByGrade = {
-        Freshman: ["Juniper", "Clark"],
-        Sophomore: ["Noyes", "Alumni"],
-        Junior: ["Triangle", "Hazel"],
-        Senior: ["Triangle", "Hazel"],
+        Freshman: ["Juniper", "Mistletoe", "Cedar-Magnolia", "Clark"],
+        Sophomore: ["Murray Hill", "Carlton Road", "Noyes", "Fayette"],
+        Junior: ["The Village", "STJ", "PMAs", "Triangle", "Hazel"],
+        Senior: ["The Village", "STJ", "PMAs", "Triangle", "Hazel"],
     };
 
     const handleChange = (e) => {
