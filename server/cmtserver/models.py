@@ -7,7 +7,7 @@ from django.utils import timezone
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('The Email field must be set')
+            raise ValueError('an email is required.')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -43,12 +43,20 @@ class CustomUser(AbstractBaseUser):
 
     class Meta:
         db_table = 'user'
+        managed = False
 
 #store the user and their preferred dorms
 class UserDorm(models.Model):
+
     # emma added
-    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID', primary_key=True)
-    # userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
+    #userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID', primary_key=True)
+    userID = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        db_column='userID'
+    )
+
     dorm = models.CharField(max_length=100)
 
     class Meta:
@@ -57,7 +65,12 @@ class UserDorm(models.Model):
 
 #quiz results model - self
 class UserResults(models.Model):
-    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
+    userID = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True, 
+        db_column='userID'
+    )
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
     noise = models.IntegerField()
@@ -71,8 +84,15 @@ class UserResults(models.Model):
     
 #quiz results model - ideal
 class UserIdeal(models.Model):
-    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID', primary_key=True)
-    # userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
+
+    #userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID', primary_key=True)
+    userID = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        db_column='userID'
+    )
+
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
     noise = models.IntegerField()
@@ -86,7 +106,12 @@ class UserIdeal(models.Model):
 
 #quiz results model - dealbreakers
 class UserImportant(models.Model):
-    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
+    userID = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        db_column='userID'
+    )
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
     noise = models.IntegerField()

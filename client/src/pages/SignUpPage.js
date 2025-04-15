@@ -64,6 +64,7 @@ const SignUpPage = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Success:', data);
+                navigate("/profile");
             } else {
                 const errorData = await response.json();
                 console.error('Error creating user:', errorData);
@@ -73,8 +74,6 @@ const SignUpPage = () => {
             console.error('There was an error!', error);
             alert('Error creating user.');
         }
-    
-        navigate("/profile");
     };
 
     const setPasswordVisible = () => {
