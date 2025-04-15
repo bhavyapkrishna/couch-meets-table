@@ -18,9 +18,16 @@ from cmtserver.models import UserIdeal
 User = get_user_model()
 # print(User.objects.all())
 # print("Django is set up! Number of users:", User.objects.count())
-user = User.objects.get(email="bpk31@case.edu")
+# user = User.objects.get(email="bpk31@case.edu")
 
-important_data = UserIdeal.objects.get(userID=user)
+users = User.objects.all()
 
-# Now access fields
-print(important_data.wakeTime, important_data.messiness)
+for user in users:
+    try:
+        impoData = UserIdeal.objects.get(userID=user)
+        print(impoData.wakeTime, impoData.sleepTime, impoData.noise, impoData.messiness, impoData.guests, impoData.inRoom)
+    except UserIdeal.DoesNotExist:
+        print(f"{user.email} has no important settings.")
+
+
+# wake up time, sleep time, quietness, cleaniness, guest, in room?
