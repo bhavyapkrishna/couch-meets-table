@@ -20,6 +20,9 @@ class CustomUserManager(BaseUserManager):
 
 #normal user model
 class CustomUser(AbstractBaseUser):
+    # id = models.AutoField(primary_key=True)
+    # emma added line 25
+    userID = models.AutoField(primary_key=True, db_column='userID')
     caseid = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100, default="")
     last_name = models.CharField(max_length=100, default="")
@@ -43,7 +46,9 @@ class CustomUser(AbstractBaseUser):
 
 #store the user and their preferred dorms
 class UserDorm(models.Model):
-    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
+    # emma added
+    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID', primary_key=True)
+    # userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
     dorm = models.CharField(max_length=100)
 
     class Meta:
@@ -66,7 +71,8 @@ class UserResults(models.Model):
     
 #quiz results model - ideal
 class UserIdeal(models.Model):
-    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
+    userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID', primary_key=True)
+    # userID = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_column='userID')
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
     noise = models.IntegerField()

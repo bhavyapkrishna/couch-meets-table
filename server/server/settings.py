@@ -80,19 +80,48 @@ WSGI_APPLICATION = "server.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.mysql'),
+#         'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),
+#         'USER': os.getenv('DATABASE_USER', 'cmtuser'),
+#         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_default_password'),
+#         'HOST': os.getenv('DATABASE_HOST', '34.162.37.106'),
+#         'PORT': os.getenv('DATABASE_PORT', '3306'),
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         },
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.mysql'),
-        'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),  
-        'USER': os.getenv('DATABASE_USER', 'cmtuser'),     
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_default_password'), 
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),    
-        'PORT': os.getenv('DATABASE_PORT', '3306'),        
+        'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),
+        'USER': os.getenv('DATABASE_USER', 'cmtuser'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'couchmeetstable123'),
+        'HOST': os.getenv('DATABASE_HOST', '34.162.37.106'),
+        'PORT': os.getenv('DATABASE_PORT', '3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
         },
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'cmtdatabase',
+#         'USER': 'cmtuser',
+#         'PASSWORD': 'your_actual_password',
+#         'HOST': '34.162.37.106',     # ✅ change from 'localhost'
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         }
+#     }
+# }
+
 
 
 # Password validation
