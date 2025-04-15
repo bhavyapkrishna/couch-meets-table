@@ -81,12 +81,12 @@ const ProfilePage = () => {
             localStorage.setItem('profile_data', JSON.stringify(formattedProfileData));
 
         } catch (error) {
-            console.error('Profile load error:', err);
-            setError(err.message);
+            console.error('Profile load error:', error);
+            setError(error.message);
 
-            if (err.message.includes('Session expired') ||
-                err.message.includes('No authentication') ||
-                err.message.includes('Unauthorized')) {
+            if (error.message.includes('Session expired') ||
+                error.message.includes('No authentication') ||
+                error.message.includes('Unauthorized')) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 localStorage.removeItem('profile_data');
@@ -164,15 +164,15 @@ const ProfilePage = () => {
                         {/* Info */}
                         {/*TEMP*/}
                         <Col md={8}>
-                            <h3><strong>{user.profile.first_name} {user.profile.last_name}, {user.profile.age}</strong></h3>
-                            <p><strong>Grade:</strong> {user.profile.grade}</p>
-                            <p><strong>Major:</strong> {user.profile.major}</p>
-                            <p><strong>Dorm Preference:</strong> {user.profile.dorms.join(', ')}</p>
-                            <p><strong>Bio:</strong> {user.profile.bio}</p>
+                            <h3><strong>{profileData.profile.first_name} {profileData.profile.last_name}, {profileData.profile.age}</strong></h3>
+                            <p><strong>Grade:</strong> {profileData.profile.grade}</p>
+                            <p><strong>Major:</strong> {profileData.profile.major}</p>
+                            <p><strong>Dorm Preference:</strong> {profileData.profile.dorms.join(", ")}</p>
+                            <p><strong>Bio:</strong> {profileData.profile.bio}</p>
 
                             <hr />
                             <div className="quiz-response">
-                                {profileData.quizResponse.map((response, index) => (
+                            {profileData.quizResponse.map((response, index) => (
                                     <p key={index} className="mb-2">
                                         <strong>{response.label}:</strong> {response.displayValue}
                                     </p>
