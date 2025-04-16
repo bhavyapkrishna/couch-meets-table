@@ -25,7 +25,7 @@ export default function HomePage()
             {/*Start button*/}
             <div className="mt-3">
                 <Link to="/quiz">
-                    <button onClick={handleLogin} className="custom-btn">Start</button>
+                    <button className="custom-btn">Start</button>
                 </Link>
             </div>
         </div>
