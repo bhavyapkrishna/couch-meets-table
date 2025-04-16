@@ -24,8 +24,8 @@ const CreateProfilePage = () => {
     const dormsByGrade = {
         Freshman: ["Juniper", "Mistletoe", "Cedar-Magnolia", "Clark"],
         Sophomore: ["Murray Hill", "Carlton Road", "Noyes", "Fayette"],
-        Junior: ["The Village", "STJ", "PMAs", "Triangle", "Hazel"],
-        Senior: ["The Village", "STJ", "PMAs", "Triangle", "Hazel"],
+        Junior: ["The Village", "STJ", "PMAs", "Hazel"],
+        Senior: ["The Village", "STJ", "PMAs", "Hazel"],
     };
 
     const handleChange = (e) => {
