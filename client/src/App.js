@@ -21,6 +21,7 @@ function App() {
                   <Route path="/createProfile" element={<CreateProfilePage />} />
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/swiping" element={<ProtectedRoute><SwipePage /></ProtectedRoute>} />
+                  <Route path="*" element={<h2>404: Page Not Found</h2>} />
               </Routes>
       </UserProvider>
   );
