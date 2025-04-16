@@ -13,7 +13,6 @@ import {UserProvider} from "./UserProvider";
 function App() {
   return (
       <UserProvider>
-        <Router>
               <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
@@ -22,9 +21,7 @@ function App() {
                   <Route path="/createProfile" element={<CreateProfilePage />} />
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/swiping" element={<ProtectedRoute><SwipePage /></ProtectedRoute>} />
-                  <Route path="*" element={<h2>404: Page Not Found</h2>} />
               </Routes>
-        </Router>
       </UserProvider>
   );
 }
