@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser, UserDorm, UserResults, UserIdeal, UserImportant
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserResultsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -91,3 +93,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_dorms(self, obj):
         dorms = UserDorm.objects.filter(userID=obj)
         return [d.dorm for d in dorms]
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['email'] = user.email
+        return token
+
+    def validate(self, attrs):
+        attrs['username'] = attrs.get('email')
+        return super().validate(attrs)
