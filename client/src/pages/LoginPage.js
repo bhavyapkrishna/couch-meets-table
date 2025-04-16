@@ -26,7 +26,6 @@ const LoginPage = () => {
     
         const userData = await response.json();
     
-        // Parse quizResponse structure
         const labels = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom'];
         const results = userData.results;
         const ideal = userData.preferences;
