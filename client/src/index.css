@@ -34,8 +34,22 @@ code {
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #455A64;
 }
 
 .custom-txt {
   color: #607D8B !important;
+}
+
+.container-fluid.custom-bg {
+  background-color: #FFFFFF;
+  height: 100%;
+}
+
+.card.custom-bg {
+  background-color: #F5F5F5;
 }

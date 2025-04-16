@@ -61,9 +61,9 @@ const CreateProfilePage = () => {
     };
 
     return (
-        <div className="container-fluid custom-bg vh-100 d-flex flex-column align-items-center pt-5">
+        <div className="container-fluid vh-100 d-flex flex-column align-items-center pt-5">
             <Navbar />
-            <div className="card p-4 mt-4 w-75 shadow-lg border-0">
+            <div className="card p-4 mt-5 w-75 border-0 custom-bg">
                 <h2 className="text-center mb-4 custom-txt">Create Profile</h2>
                 <form onSubmit={handleSubmit} className="row g-3">
                     <div className="col-md-6">
@@ -104,18 +104,20 @@ const CreateProfilePage = () => {
                             {/*    ))}*/}
                             {/*</select>*/}
                             {/*multiselect react-select attempt*/}
-                            <Select
-                                isMulti
-                                name="dorms"
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                                options={dormOptions}
-                                value={dormOptions.filter(option => profile.dorms.includes(option.value))}
-                                onChange={handleDormChange}
-                                getOptionLabel={(e) => e.label}
-                                getOptionValue={(e) => e.value}
-                            />
-                        </div>
+                            {dormOptions && dormOptions.length > 0 && (
+                                <Select
+                                    isMulti
+                                    name="dorms"
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    options={dormOptions}
+                                    value={dormOptions.filter(option => profile.dorms.includes(option.value))}
+                                    onChange={handleDormChange}
+                                    getOptionLabel={(e) => e.label}
+                                    getOptionValue={(e) => e.value}
+                                />
+                            )}
+                       </div>
                     )}
 
                     <div className="col-md-6">
@@ -127,7 +129,7 @@ const CreateProfilePage = () => {
                         <textarea className="form-control" name="bio" value={profile.bio} onChange={handleChange}></textarea>
                     </div>
                     <div className="d-grid mt-4">
-                        <button type="submit" className="btn btn-primary">Save Profile</button>
+                        <button type="submit" className="custom-btn">Save Profile</button>
                     </div>
                 </form>
             </div>

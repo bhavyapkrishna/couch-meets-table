@@ -105,7 +105,7 @@ const QuizPage = () => {
           This preference is important to me
         </label>
 
-        <div>
+        <div className="mt-4">
           {currentQuestion > 0 && <button onClick={prevQuestion} className="custom-btn">Back</button>}
           <button onClick={nextQuestion} className="custom-btn">{currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>
 
