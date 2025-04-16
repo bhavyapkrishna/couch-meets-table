@@ -10,7 +10,7 @@ const SignUpPage = () => {
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -39,7 +39,7 @@ const SignUpPage = () => {
             console.log("preferences", ideal)
             console.log("important", important)
             
-            const response = await fetch('http://localhost:8000/api/register/', {
+            const registerResponse = await fetch('http://localhost:8000/api/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,15 +61,68 @@ const SignUpPage = () => {
                 }),
             });
     
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Success:', data);
-                navigate("/profile");
-            } else {
-                const errorData = await response.json();
+            if (!registerResponse.ok) {
+                const errorData = await registerResponse.json();
                 console.error('Error creating user:', errorData);
                 alert('Error creating user.');
+                return;
             }
+    
+            const tokenResponse = await fetch("http://localhost:8000/api/token/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+    
+            if (!tokenResponse.ok) {
+                alert("Login failed.");
+                return;
+            }
+    
+            const tokenData = await tokenResponse.json();
+            localStorage.setItem("access_token", tokenData.access);
+            localStorage.setItem("refresh_token", tokenData.refresh);
+
+            const profileResponse = await fetch("http://localhost:8000/api/profile/", {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${tokenData.access}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!profileResponse.ok) {
+                alert("Failed to fetch profile.");
+                return;
+            }
+    
+            const userData = await profileResponse.json();
+    
+            const quizResponse = labels.map((label) => ({
+                self: { label, value: userData.results[label] },
+                ideal: { label, value: userData.preferences[label] },
+                important: { label, value: userData.important[label] },
+            }));
+    
+            setUser({
+                profile: {
+                    caseid: userData.caseid,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    age: userData.age,
+                    grade: userData.grade,
+                    major: userData.major,
+                    bio: userData.bio,
+                    email: userData.email,
+                    dorms: userData.dorms,
+                },
+                quizResponse,
+            });
+    
+            navigate("/profile");
+            
         } catch (error) {
             console.error('There was an error!', error);
             alert('Error creating user.');
