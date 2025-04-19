@@ -20,7 +20,7 @@ class CustomUserManager(BaseUserManager):
 
 #normal user model
 class CustomUser(AbstractBaseUser):
-    userID = models.AutoField(primary_key=True)
+    userid = models.AutoField(primary_key=True)
     caseid = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100, default="")
     last_name = models.CharField(max_length=100, default="")
@@ -45,11 +45,11 @@ class CustomUser(AbstractBaseUser):
 
 #store the user and their preferred dorms
 class UserDorm(models.Model):
-    userID = models.OneToOneField(
+    userid = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
         primary_key=True,
-        db_column='userID'
+        db_column='userid'
     )
     dorm = models.CharField(max_length=100)
 
@@ -59,11 +59,11 @@ class UserDorm(models.Model):
 
 #quiz results model - self
 class UserResults(models.Model):
-    userID = models.OneToOneField(
+    userid = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
         primary_key=True, 
-        db_column='userID'
+        db_column='userid'
     )
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
@@ -78,11 +78,11 @@ class UserResults(models.Model):
     
 #quiz results model - ideal
 class UserIdeal(models.Model):
-    userID = models.OneToOneField(
+    userid = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
         primary_key=True,
-        db_column='userID'
+        db_column='userid'
     )
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
@@ -97,11 +97,11 @@ class UserIdeal(models.Model):
 
 #quiz results model - dealbreakers
 class UserImportant(models.Model):
-    userID = models.OneToOneField(
+    userid = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
         primary_key=True,
-        db_column='userID'
+        db_column='userid'
     )
     wakeTime = models.IntegerField()
     sleepTime = models.IntegerField()
