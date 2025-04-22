@@ -127,7 +127,7 @@ const CreateProfilePage = () => {
                         <textarea className="form-control" name="bio" value={profile.bio} onChange={handleChange}></textarea>
                     </div>
                     <div className="d-grid mt-4">
-                        <button type="submit" className="btn btn-primary">Save Profile</button>
+                        <button type="submit" className="custom-btn">Save Profile</button>
                     </div>
                 </form>
             </div>
