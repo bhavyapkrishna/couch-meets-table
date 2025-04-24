@@ -53,12 +53,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
         user = CustomUser.objects.create_user(**validated_data)
 
-        UserResults.objects.create(userID=user, **results)
-        UserIdeal.objects.create(userID=user, **preferences)
-        UserImportant.objects.create(userID=user, **important)
+        UserResults.objects.create(userid=user, **results)
+        UserIdeal.objects.create(userid=user, **preferences)
+        UserImportant.objects.create(userid=user, **important)
 
         for dorm in dorms:
-            UserDorm.objects.create(userID=user, dorm=dorm)
+            UserDorm.objects.create(userid=user, dorm=dorm)
 
         return user
     
@@ -74,24 +74,24 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_results(self, obj):
         try:
-            return UserResultsSerializer(UserResults.objects.get(userID=obj)).data
+            return UserResultsSerializer(UserResults.objects.get(userid=obj)).data
         except UserResults.DoesNotExist:
             return None
 
     def get_preferences(self, obj):
         try:
-            return UserIdealSerializer(UserIdeal.objects.get(userID=obj)).data
+            return UserIdealSerializer(UserIdeal.objects.get(userid=obj)).data
         except UserIdeal.DoesNotExist:
             return None
 
     def get_important(self, obj):
         try:
-            return UserImportantSerializer(UserImportant.objects.get(userID=obj)).data
+            return UserImportantSerializer(UserImportant.objects.get(userid=obj)).data
         except UserImportant.DoesNotExist:
             return None
 
     def get_dorms(self, obj):
-        dorms = UserDorm.objects.filter(userID=obj)
+        dorms = UserDorm.objects.filter(userid=obj)
         return [d.dorm for d in dorms]
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

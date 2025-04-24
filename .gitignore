@@ -47,5 +47,3 @@ server/.venv/
 server/cmtserver/__pycache__/
 
 server/cmtserver/migrations/
-
-.venv/
