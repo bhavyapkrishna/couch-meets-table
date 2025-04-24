@@ -54,6 +54,13 @@ const CreateProfilePage = () => {
         }
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfile((prev) => ({ ...prev, profilePhoto: file }));
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setUser((prev) => ({ ...prev, profile }));
@@ -125,6 +132,11 @@ const CreateProfilePage = () => {
                     <div className="col-md-6">
                         <label className="form-label">Bio:</label>
                         <textarea className="form-control" name="bio" value={profile.bio} onChange={handleChange}></textarea>
+                    </div>
+
+                    <div className="col-md-6">
+                        <label className="form-label">Profile Photo:</label>
+                        <input type="file" className="form-control" accept="image/*" onChange={handleFileChange} />
                     </div>
                     <div className="d-grid mt-4">
                         <button type="submit" className="btn btn-primary">Save Profile</button>
