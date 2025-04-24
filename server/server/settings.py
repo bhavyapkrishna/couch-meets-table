@@ -14,6 +14,7 @@ from datetime import timedelta
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import ssl
 
 load_dotenv()
 
@@ -92,7 +93,8 @@ DATABASES = {
         'OPTIONS': {
             'charset': 'utf8mb4',
             'ssl': {
-                'ca': os.getenv('MYSQL_SSL_CA', '/absolute/path/to/DigiCertGlobalRootG2.crt.pem')
+                'check_hostname': False,
+                'verify_mode': ssl.CERT_NONE
             }
         },
     }
