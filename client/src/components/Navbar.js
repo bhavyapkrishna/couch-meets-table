@@ -1,4 +1,7 @@
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import { useState, useContext } from "react";
+import { UserContext } from "../UserProvider";
+
 
 function Navbar() {
     const location = useLocation();
