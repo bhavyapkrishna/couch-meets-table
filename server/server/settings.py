@@ -84,13 +84,16 @@ WSGI_APPLICATION = "server.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.mysql'),
-        'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),  
-        'USER': os.getenv('DATABASE_USER', 'cmtuser'),     
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_default_password'), 
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),    
-        'PORT': os.getenv('DATABASE_PORT', '3306'),        
+        'NAME': os.getenv('DATABASE_NAME', 'cmtdatabase'),
+        'USER': os.getenv('DATABASE_USER', 'cmtuser@yourserver'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
+        'HOST': os.getenv('DATABASE_HOST', 'yourserver.mysql.database.azure.com'),
+        'PORT': os.getenv('DATABASE_PORT', '3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
+            'ssl': {
+                'ca': os.getenv('MYSQL_SSL_CA', '/absolute/path/to/DigiCertGlobalRootG2.crt.pem')
+            }
         },
     }
 }
@@ -164,8 +167,8 @@ SIMPLE_JWT = {
     
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "USER_ID_FIELD": "userID",
-    "USER_ID_CLAIM": "userID",
+    "USER_ID_FIELD": "userid",
+    "USER_ID_CLAIM": "userid",
     
     "JTI_CLAIM": "jti",
 }
