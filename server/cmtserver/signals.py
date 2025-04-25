@@ -11,9 +11,9 @@ def compute_scores_on_signup(sender, instance, created, **kwargs):
         return  # Only run when user is first created
     print(f"🔔 Signal fired for new user: {instance.caseid}")
     try:
-        userImpo = UserImportant.objects.get(user=instance)
-        userPref = UserIdeal.objects.get(user=instance)
-        userResults = UserResults.objects.get(user=instance)
+        userImpo = UserImportant.objects.get(userid=instance)
+        userPref = UserIdeal.objects.get(userid=instance)
+        userResults = UserResults.objects.get(userid=instance)
     except UserImportant.DoesNotExist:
         return
 
@@ -24,9 +24,9 @@ def compute_scores_on_signup(sender, instance, created, **kwargs):
 
     for currentUser in othersUsers:
         try:
-            currentUserResults = UserResults.objects.get(user=currentUser)
-            currentUserIdeal = UserIdeal.objects.get(user=currentUser)
-            currentUserImpo = UserImportant.objects.get(user=currentUser)
+            currentUserResults = UserResults.objects.get(userid=currentUser)
+            currentUserIdeal = UserIdeal.objects.get(userid=currentUser)
+            currentUserImpo = UserImportant.objects.get(userid=currentUser)
         except UserResults.DoesNotExist:
             continue
 

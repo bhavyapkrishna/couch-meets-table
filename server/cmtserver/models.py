@@ -116,14 +116,14 @@ class UserImportant(models.Model):
         managed = False
 
 class UserScore(models.Model):
-    caseid1 = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+    caseid1 = models.OneToOneField(
+        CustomUser,
         related_name='scores_given',
         to_field='caseid',
         on_delete=models.CASCADE
     )
-    caseid2 = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+    caseid2 = models.OneToOneField(
+        CustomUser,
         related_name='scores_received',
         to_field='caseid',
         on_delete=models.CASCADE
