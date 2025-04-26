@@ -139,7 +139,7 @@ const CreateProfilePage = () => {
                         <input type="file" className="form-control" accept="image/*" onChange={handleFileChange} />
                     </div>
                     <div className="d-grid mt-4">
-                        <button type="submit" className="btn btn-primary">Save Profile</button>
+                        <button type="submit" className="custom-btn">Save Profile</button>
                     </div>
                 </form>
             </div>

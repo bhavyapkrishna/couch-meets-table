@@ -8,7 +8,7 @@ class UserResultsSerializer(serializers.ModelSerializer):
         model = UserResults
         fields = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
         extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
         }
 
 class UserIdealSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class UserIdealSerializer(serializers.ModelSerializer):
         model = UserIdeal
         fields = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
         extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
         }
 
 class UserImportantSerializer(serializers.ModelSerializer):
@@ -24,14 +24,14 @@ class UserImportantSerializer(serializers.ModelSerializer):
         model = UserImportant
         fields = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
         extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
         }
 
 class UserDormSerializer(serializers.ModelSerializer):
     model = UserDorm
     fields = ['dorm']
     extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
     }
 
 class CustomUserSerializer(serializers.ModelSerializer):
