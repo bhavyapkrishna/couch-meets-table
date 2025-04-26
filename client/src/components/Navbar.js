@@ -1,5 +1,5 @@
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import { useState, useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../UserProvider";
 
 
@@ -9,12 +9,35 @@ function Navbar() {
     const { pathname } = location;
     const { user, setUser } = useContext(UserContext);
 
-    const handleLogOut = () => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        setUser(null);
-        navigate("/login");
-    }
+    const handleLogOut = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        const refreshToken = localStorage.getItem("refresh_token");
+
+        try {
+            const response = await fetch("http://localhost:8000/api/logout/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({ refresh_token: refreshToken }), 
+            });
+
+            if (response.ok) {
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
+                setUser({
+                    profile: {},
+                    quizResponse: [],
+                });  
+                navigate("/login");
+            } else {
+                console.error("Failed to log out", await response.json());
+            }
+        } catch (error) {
+            console.error("Failed to log out", error);
+        }
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark custom-sec-bg fixed-top py-3">
@@ -23,7 +46,7 @@ function Navbar() {
                     Couch Meets Table
                 </Link>
                 <div className="ms-auto me-3 d-flex gap-3">
-                    {user ? (
+                    {(user.quizResponse.length > 0) ? (
                         <>
                             <Link
                                 to="/swiping"
@@ -37,6 +60,7 @@ function Navbar() {
                             >
                                 Profile
                             </Link>
+
                             <button onClick={handleLogOut} className="btn btn-link text-white text-decoration-none">
                                 Logout
                             </button>
