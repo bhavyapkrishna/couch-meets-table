@@ -116,24 +116,30 @@ class UserImportant(models.Model):
         managed = False
 
 class UserScore(models.Model):
-    caseid1 = models.OneToOneField(
+    caseid1 = models.ForeignKey(
         CustomUser,
         related_name='scores_given',
         to_field='caseid',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        db_column='caseid1'
     )
-    caseid2 = models.OneToOneField(
+    caseid2 = models.ForeignKey(
         CustomUser,
         related_name='scores_received',
         to_field='caseid',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        db_column='caseid2'
     )
     score = models.IntegerField()
     swiped = models.BooleanField(default=False)
 
     class Meta:
+        db_table = 'user_scores'
+        managed = False
         unique_together = ('caseid1', 'caseid2')
 
     def __str__(self):
         return f"{self.caseid1.caseid} → {self.caseid2.caseid}: {self.score}"
+
+
 

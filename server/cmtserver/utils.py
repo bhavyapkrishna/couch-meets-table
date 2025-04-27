@@ -18,4 +18,6 @@ def determineCompatability(person1, person2, person1Impo):
 
     currentCompatability = currentCompatability/numberOfFeatures
     currentCompatability = currentCompatability*100
+    if currentCompatability == float('-inf'):
+        currentCompatability = 0
     return(currentCompatability)
