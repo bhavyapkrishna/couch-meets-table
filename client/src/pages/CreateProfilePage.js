@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import {useState, useContext, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserProvider";
 import Select from "react-select";
@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 
 const CreateProfilePage = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
+    const { setUser, user } = useContext(UserContext);
 
     const [profile, setProfile] = useState({
         caseid: "",
@@ -28,6 +28,12 @@ const CreateProfilePage = () => {
         Junior: ["The Village", "STJ", "PMAs", "Hazel"],
         Senior: ["The Village", "STJ", "PMAs", "Hazel"],
     };
+
+    useEffect(() => {
+        if (user?.profile) {
+            setProfile(user.profile);
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -71,7 +77,7 @@ const CreateProfilePage = () => {
         <div className="container-fluid custom-bg vh-100 d-flex flex-column align-items-center pt-5">
             <Navbar />
             <div className="card p-4 mt-4 w-75 shadow-lg border-0">
-                <h2 className="text-center mb-4 custom-txt">Create Profile</h2>
+                <h2 className="text-center mb-4 custom-txt">Create/ Edit Profile</h2>
                 <form onSubmit={handleSubmit} className="row g-3">
                     <div className="col-md-6">
                         <label className="form-label">Case ID:</label>

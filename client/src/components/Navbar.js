@@ -39,6 +39,36 @@ function Navbar() {
         }
     };
 
+    const handleDeleteAcc = async () => {
+        const accessToken = localStorage.getItem("access_token");
+
+        try {
+            const response = await fetch("http://localhost:8000/api/delete-account/", {
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            if (response.ok) {
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
+
+                setUser({
+                    profile: {},
+                    quizResponse: {},
+                });
+
+                navigate("/signup");
+            } else {
+                console.error("failed to delete account", await response.json());
+            }
+        } catch (error) {
+            console.error("failed to delete account", error);
+        }
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark custom-sec-bg fixed-top py-3">
             <div className="container-fluid">
@@ -63,6 +93,10 @@ function Navbar() {
 
                             <button onClick={handleLogOut} className="btn btn-link text-white text-decoration-none">
                                 Logout
+                            </button>
+
+                            <button onClick={handleDeleteAcc} className="btn btn-link text-white text-decoration-none">
+                                Delete Account
                             </button>
                         </>
                     ) : (
