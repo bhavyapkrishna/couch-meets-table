@@ -17,7 +17,7 @@ const CreateProfilePage = () => {
         major: "",
         dorms: [],
         bio: "",
-        profilePhoto: "",
+        profile_photo: "",
     });
 
     const [dormOptions, setDormOptions] = useState([]);
@@ -57,7 +57,7 @@ const CreateProfilePage = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setProfile((prev) => ({ ...prev, profilePhoto: file }));
+            setProfile((prev) => ({ ...prev, profile_photo: file }));
         }
     }
 
