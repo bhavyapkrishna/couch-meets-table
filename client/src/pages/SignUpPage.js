@@ -85,6 +85,25 @@ const SignUpPage = () => {
             localStorage.setItem("access_token", tokenData.access);
             localStorage.setItem("refresh_token", tokenData.refresh);
 
+            if (user.profile.profile_photo) { // Use the correct state name
+                const form_data = new FormData();
+                form_data.append('profile_photo', user.profile.profile_photo);
+
+                const profilePhotoResponse = await fetch('http://localhost:8000/api/profile/upload_photo/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${tokenData.access}`,
+                    },
+                    body: form_data,
+                });
+
+                if (!profilePhotoResponse.ok) {
+                    const errorData = await profilePhotoResponse.json();
+                    console.error('Error uploading profile photo:', errorData);
+                    alert('Error uploading profile photo.');
+                }
+            }
+
             const profileResponse = await fetch("http://localhost:8000/api/profile/", {
                 method: "GET",
                 headers: {
