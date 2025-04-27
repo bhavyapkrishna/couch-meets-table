@@ -7,6 +7,12 @@ from .serializers import CustomUserSerializer, UserProfileSerializer, CustomToke
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from rest_framework.parsers import MultiPartParser, FormParser # Import parsers for file uploads
+from django.utils.text import get_valid_filename # Import for filename sanitization
+import os
 
 # Create your views here.
 
@@ -18,7 +24,29 @@ class RegisterView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#view for uploading user profile photo
+class UploadProfilePhotoView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        file_obj = request.FILES.get('profile_photo')
+        if not file_obj:
+            return Response({"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        filename = get_valid_filename(file_obj.name)
+        filename = default_storage.generate_filename(os.path.join(f'uploads/{request.user.caseid}', filename))
+        filename = default_storage.save(filename, ContentFile(file_obj.read()))
+
+        file_url = default_storage.url(filename)  # Changed this line back
+        request.user.profile_photo = file_url
+        request.user.save()
+
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 #view for getting user data during login
 @api_view(['GET'])
