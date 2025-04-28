@@ -101,6 +101,13 @@ const SwipingPage = () => {
         );
     }
 
+    let profilePhotoSource;
+    if (profile && profile.profile_photo) {
+        profilePhotoSource = `${profile.media_url}${profile.profile_photo}`;
+    } else {
+        profilePhotoSource = profilePic;
+    }
+
     return (
         <div className="d-flex flex-column min-vh-100">
             <Navbar />
@@ -131,11 +138,7 @@ const SwipingPage = () => {
                                 {/*/>*/}
                                 {/*<p className="text-muted mt-2">matched • {profile.id}</p>*/}
                                 <Image
-                                    src={
-                                        profile.profile_photo
-                                            ? `${profile.media_url}${profile.profile_photo}`
-                                            : profilePic
-                                    }
+                                    src={profilePhotoSource}
                                     rounded
                                     fluid
                                     className="border border-primary p-1"
