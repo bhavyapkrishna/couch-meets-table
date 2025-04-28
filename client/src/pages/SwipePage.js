@@ -79,7 +79,12 @@ const SwipingPage = () => {
             <div className="d-flex flex-column min-vh-100">
                 <Navbar />
                 <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
-                    <h1 className="h3 custom-txt">Loading...</h1>
+                    <div className="d-flex flex-column align-items-center gap-3">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <h1 className="h3 custom-txt">Loading...</h1>
+                    </div>
                 </Container>
             </div>
         );
