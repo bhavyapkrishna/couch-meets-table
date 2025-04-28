@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserProvider";
 import Navbar from "../components/Navbar";
 import Modal from "react-bootstrap/Modal";
@@ -38,6 +38,7 @@ const MatchesPage = () => {
   }, []);
 
 
+
   const handleNameClick = (match) => {
     setSelectedMatch(match);
     setShowModal(true);
@@ -47,6 +48,11 @@ const MatchesPage = () => {
     setShowModal(false);
     setSelectedMatch(null);
   };
+
+  console.log("matches", matches)
+  if (!matches) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container-fluid vh-100 d-flex flex-column align-items-center pt-5">
@@ -107,12 +113,18 @@ const MatchesPage = () => {
           </Modal.Header>
           <Modal.Body>
             {selectedMatch && (
-              <>
-                <p><strong>Age:</strong> {selectedMatch.age}</p>
-                <p><strong>Major:</strong> {selectedMatch.major}</p>
-                <p><strong>Preferred Dorms:</strong> {selectedMatch.dorms.join(", ")}</p>
-                <p><strong>Bio:</strong> {selectedMatch.bio}</p>
-              </>
+                <>
+                  <p><strong>Age:</strong> {selectedMatch.age}</p>
+                  <p><strong>Major:</strong> {selectedMatch.major}</p>
+                  <p><strong>Preferred Dorms:</strong> {selectedMatch.dorms.join(", ")}</p>
+                  <p><strong>Bio:</strong> {selectedMatch.bio}</p>
+                  <p><strong>Wake Up Time:</strong> {selectedMatch.wakeup}</p>
+                  <p><strong>Sleep Time:</strong> {selectedMatch.sleepTime}</p>
+                  <p><strong>Noise Level:</strong> {selectedMatch.noise}</p>
+                  <p><strong>Messiness:</strong> {selectedMatch.messiness}</p>
+                  <p><strong>Guests in Room:</strong> {selectedMatch.guests}</p>
+                  <p><strong>In Room:</strong> {selectedMatch.inRoom}</p>
+                </>
             )}
           </Modal.Body>
           <Modal.Footer>

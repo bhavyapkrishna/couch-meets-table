@@ -89,19 +89,48 @@ def get_matches(request):
     for score in scores:
         match_user = score.caseid2
         dorms = UserDorm.objects.filter(userid=match_user.userid).values()
+        results = UserResults.objects.filter(userid=match_user.userid).values()
+
+
+        # print("matched user", results, len(results))
+
+        options = {
+            "wakeTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
+            "sleepTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
+            "noise": ["Silent", "Somewhat quiet", "Average", "Somewhat loud", "Loud"],
+            "messiness": ["Neat", "Somewhat neat", "Average", "Somewhat messy", "Messy"],
+            "guests": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"],
+            "inRoom": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"]}
+
+        matches.append({
+            'id': match_user.userid,
+            'grade': match_user.grade,
+            'name': f"{match_user.first_name} {match_user.last_name}",
+            'age': match_user.age,
+            'major': match_user.major,
+            'dorms': [dorm['dorm'] for dorm in dorms],
+            'bio': match_user.bio,
+            'matchPercentage': score.score,
+            'wakeup': options["wakeTime"][results[0]["wakeTime"]-1],
+            'sleepTime': options["sleepTime"][results[0]["sleepTime"]-1],
+            'noise': options["noise"][results[0]["noise"]-1],
+            'messiness': options["messiness"][results[0]["messiness"]-1],
+            'guests': options["guests"][results[0]["guests"]-1],
+            'inRoom': options["inRoom"][results[0]["inRoom"]-1],
+        })
 
         #reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
         # print(f"Match found for {user.caseid} with {match_user.caseid}: {score.score}")
 
         #if reverse_score:
-        matches.append({
-                'id': match_user.userid,
-                'name': f"{match_user.first_name} {match_user.last_name}",
-                'age': match_user.age,
-                'major': match_user.major,
-                'dorms': [dorm['dorm'] for dorm in dorms],
-                'bio': match_user.bio,
-                'matchPercentage': score.score,
-        })
+        # matches.append({
+        #         'id': match_user.userid,
+        #         'name': f"{match_user.first_name} {match_user.last_name}",
+        #         'age': match_user.age,
+        #         'major': match_user.major,
+        #         'dorms': [dorm['dorm'] for dorm in dorms],
+        #         'bio': match_user.bio,
+        #         'matchPercentage': score.score,
+        # })
 
     return Response(matches)
