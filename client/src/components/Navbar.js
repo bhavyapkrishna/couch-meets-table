@@ -2,13 +2,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../UserProvider";
 
-
+// Navigation bar component for top of web page
 function Navbar() {
     const location = useLocation();
     const navigate = useNavigate();
     const { pathname } = location;
     const { user, setUser } = useContext(UserContext);
+    const [errorMessage, setErrorMessage] = useState("");
 
+    //user logout
     const handleLogOut = async () => {
         const accessToken = localStorage.getItem("access_token");
         const refreshToken = localStorage.getItem("refresh_token");
@@ -24,6 +26,7 @@ function Navbar() {
             });
 
             if (response.ok) {
+                // clear storage, reset user context
                 localStorage.removeItem("access_token");
                 localStorage.removeItem("refresh_token");
                 setUser({
@@ -32,13 +35,15 @@ function Navbar() {
                 });  
                 navigate("/login");
             } else {
-                console.error("Failed to log out", await response.json());
+                const errorData = await response.json();
+                setErrorMessage(errorData.detail || "Failed to log out. Please try again.");
             }
         } catch (error) {
-            console.error("Failed to log out", error);
+            setErrorMessage("Error during logout. Please try again.");
         }
     };
 
+    //user account deletion
     const handleDeleteAcc = async () => {
         const accessToken = localStorage.getItem("access_token");
 
@@ -52,6 +57,7 @@ function Navbar() {
             });
 
             if (response.ok) {
+                //clear local storage and reset user context
                 localStorage.removeItem("access_token");
                 localStorage.removeItem("refresh_token");
 
@@ -62,10 +68,11 @@ function Navbar() {
 
                 navigate("/signup");
             } else {
-                console.error("failed to delete account", await response.json());
+                const errorData = await response.json();
+                setErrorMessage(errorData.detail || "Failed to log out. Please try again.");
             }
         } catch (error) {
-            console.error("failed to delete account", error);
+            setErrorMessage("Error during logout. Please try again.");
         }
     }
 
@@ -75,10 +82,11 @@ function Navbar() {
                 <Link to="/" className="navbar-brand ms-3">
                     Couch Meets Table
                 </Link>
+                
+                {/* navigation links */}
                 <div className="ms-auto me-3 d-flex gap-3">
+                    {/* user authenticated */}
                     {["/swiping", "/matches", "/profile"].includes(pathname) && (
-                    // {(user.quizResponse.length > 0) ? (
-                    // ) : (
                         <>
                             <Link
                                 to="/swiping"
@@ -93,13 +101,7 @@ function Navbar() {
                                 Profile
                             </Link>
 
-                            {/* <button onClick={handleLogOut} className="btn btn-link text-white text-decoration-none">
-                                Logout
-                            </button>
-
-                            <button onClick={handleDeleteAcc} className="btn btn-link text-white text-decoration-none">
-                                Delete Account
-                            </button> */}
+                            {/* Account buttons */}
                             <button
                                 onClick={handleLogOut}
                                 className={`text-white text-decoration-none bg-transparent border-0 p-0 m-0 ${pathname === "/logout" ? "fw-bold border-bottom border-white" : ""}`}
@@ -119,6 +121,7 @@ function Navbar() {
                         </>
                     )}
 
+                    {/* User not authenticated */}
                     {["/", "/signup", "/login", "/quiz", "/createProfile"].includes(pathname) && (
                         <>
                             <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>

@@ -7,6 +7,7 @@ import profilePic from "../assets/images/stock.jpg";
 import { UserContext } from "../UserProvider";
 import { fetchDataWithTokenRefresh } from '../auth/authServices';
 
+// map quiz response to labels
 const quizResponseLabels = (key, value) => {
     const options = {
         wakeTime: ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
@@ -16,7 +17,6 @@ const quizResponseLabels = (key, value) => {
         guests: ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"],
         inRoom: ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"],
     };
-
     return options[key]?.[value] ?? "Not specified";
 }
 
@@ -27,9 +27,7 @@ const ProfilePage = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    console.log("User data:", user);
-    console.log("Quiz responses:", user.quizResponse);
-
+    //load from backend
     const loadProfile = async () => {
         setLoading(true);
         setError(null);
@@ -46,6 +44,7 @@ const ProfilePage = () => {
                 navigate('/login');
             }
 
+            // quiz responses to labels
             const labelMap = {
                 wakeTime: "Wake Time",
                 sleepTime: "Sleep Time",
@@ -61,6 +60,7 @@ const ProfilePage = () => {
                 displayValue: quizResponseLabels(key, data.results[key])
             }));
 
+            //format profile data
             const formattedProfileData = {
                 profile: {
                     caseid: data.caseid,
@@ -100,6 +100,7 @@ const ProfilePage = () => {
         }
     };
 
+    // load profile data from local storage
     useEffect(() => {
         const savedProfile = localStorage.getItem('profile_data');
         if (savedProfile) {
@@ -108,6 +109,14 @@ const ProfilePage = () => {
         }
         loadProfile();
     }, [navigate]);
+
+    // redirect after errors
+    useEffect(() => {
+        if (error) {
+            alert("Session expired. Please log in again.");
+            navigate('/login');
+        }
+    }, [error, navigate]);
 
     if (!user || !user.profile || !user.quizResponse) {
         return (
@@ -118,6 +127,7 @@ const ProfilePage = () => {
         );
     }
 
+    // loading page
     if (loading && !profileData) {
         return (
             <div className="container">
@@ -127,11 +137,7 @@ const ProfilePage = () => {
         );
     }
 
-    if (error) {
-        alert("Session expired. Please log in again.");
-        navigate('/login');
-    }
-
+    // if profile data does not load
     if (!profileData) {
         return (
             <div className="container">
@@ -141,14 +147,13 @@ const ProfilePage = () => {
         );
     }
 
+    //profile photo source
     let profilePhotoSource;
     if (profileData.profile.profile_photo) {
         profilePhotoSource =  `${profileData.profile.media_url}${profileData.profile.profile_photo}`;
     } else {
         profilePhotoSource = profilePic; 
     }
-
-
 
     return (
         <div className="min-vh-100 d-flex flex-column overflow-hidden">
@@ -159,7 +164,6 @@ const ProfilePage = () => {
                 <Card className="p-4 border-0 shadow w-75 d-flex flex-row">
                     <Row className="align-items-center w-100">
                         {/* Image */}
-                        {/*TEMP*/}
                         <Col md={4} className="text-center">
                             <Image
                                 src={profilePhotoSource}
@@ -172,7 +176,6 @@ const ProfilePage = () => {
                         </Col>
 
                         {/* Info */}
-                        {/*TEMP*/}
                         <Col md={8}>
                             <h3><strong>{profileData.profile.first_name} {profileData.profile.last_name}, {profileData.profile.age}</strong></h3>
                             <p><strong>Grade:</strong> {profileData.profile.grade}</p>
