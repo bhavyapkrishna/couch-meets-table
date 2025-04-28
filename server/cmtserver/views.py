@@ -37,16 +37,16 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 def get_matches(request):
     user = request.user
 
-    scores = UserScore.objects.filter(caseid1=user, swiped=True).order_by('-score')
+    scores = UserScore.objects.filter(caseid1=user).order_by('-score')
 
     matches = []
     for score in scores:
         match_user = score.caseid2
 
-        reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
+        #reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
 
-        if reverse_score:
-            matches.append({
+        #if reverse_score:
+        matches.append({
                 'id': match_user.userid,
                 'name': f"{match_user.first_name} {match_user.last_name}",
                 'age': match_user.age,

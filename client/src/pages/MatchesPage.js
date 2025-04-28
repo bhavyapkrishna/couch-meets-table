@@ -24,7 +24,7 @@ const MatchesPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setMatches(data); // Set the matches state with the response data
+          setMatches(data); 
         } else {
           console.error("Error fetching matches:", response.statusText);
         }
