@@ -156,7 +156,7 @@ const ProfilePage = () => {
 
     return (
         <div className="min-vh-100 d-flex flex-column overflow-hidden">
-            <Navbar />
+            <Navbar/>
 
             {/* Profile */}
             <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
@@ -170,7 +170,7 @@ const ProfilePage = () => {
                                 rounded
                                 fluid
                                 className="border border-primary p-1"
-                                style={{ maxWidth: "300px", height: "auto" }}
+                                style={{maxWidth: "300px", height: "auto"}}
                                 alt="Profile"
                             />
                         </Col>
@@ -178,13 +178,15 @@ const ProfilePage = () => {
                         {/* Info */}
                         {/*TEMP*/}
                         <Col md={8}>
-                            <h3><strong>{profileData.profile.first_name} {profileData.profile.last_name}, {profileData.profile.age}</strong></h3>
+                            <h3>
+                                <strong>{profileData.profile.first_name} {profileData.profile.last_name}, {profileData.profile.age}</strong>
+                            </h3>
                             <p><strong>Grade:</strong> {profileData.profile.grade}</p>
                             <p><strong>Major:</strong> {profileData.profile.major}</p>
                             <p><strong>Dorm Preference:</strong> {profileData.profile.dorms.join(", ")}</p>
                             <p><strong>Bio:</strong> {profileData.profile.bio}</p>
 
-                            <hr />
+                            <hr/>
                             <div className="quiz-response">
                                 {profileData.quizResponse.map((response, index) => (
                                     <p key={index} className="mb-2">
@@ -196,6 +198,7 @@ const ProfilePage = () => {
                     </Row>
                 </Card>
             </Container>
+            <button type="changeProfile" className="custom-btn" onClick={() => navigate("/createProfile")}>Edit Profile</button>
         </div>
     );
 };
