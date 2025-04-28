@@ -99,11 +99,14 @@ def get_matches(request):
 
     scores = UserScore.objects.filter(caseid1=user).order_by('-score')
 
+    print(f"Found {scores.count()} scores for user {user.username}")  # Add logging to see the results
+
     matches = []
     for score in scores:
         match_user = score.caseid2
 
         #reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
+        print(f"Match found for {user.username} with {match_user.username}: {score.score}")
 
         #if reverse_score:
         matches.append({
