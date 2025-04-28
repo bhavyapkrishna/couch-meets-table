@@ -34,7 +34,6 @@ def calculate_scores_background(instance):
             continue
 
         score = determineCompatability(userPrefArray, currentUserResultsArr, userImpoArray)
-        # print(f"✅ Score from {instance.caseid} to {currentUser.caseid}: {score}")
         UserScore.objects.create(
             caseid1=instance,  # new user
             caseid2=currentUser,
@@ -44,7 +43,6 @@ def calculate_scores_background(instance):
 
         # Optional: also add reverse direction if you want mutual scores
         reverse_score = determineCompatability(currentUserIdealArr, userResultsArray, currentUserImpoArr)
-        # print(f"✅ Reverse score from {currentUser.caseid} to {instance.caseid}: {reverse_score}")
         UserScore.objects.create(
             caseid1=currentUser,
             caseid2=instance,
@@ -55,6 +53,5 @@ def calculate_scores_background(instance):
 def compute_scores_on_signup(sender, instance, created, **kwargs):
     if not created:
         return  # Only run when user is first created
-    # print(f"🔔 Signal fired for new user: {instance.caseid}")
     thread = threading.Thread(target=calculate_scores_background, args=(instance,))
     thread.start()

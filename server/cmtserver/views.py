@@ -38,12 +38,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 @permission_classes([IsAuthenticated])
 def get_matches_users(request):
     user = request.user
-    scores = UserScore.objects.filter(caseid1=user).order_by("-score")
+    scores = UserScore.objects.filter(caseid1=user, swiped=False).order_by("-score")
     matches = []
     for score in scores:
         match_user = score.caseid2
         dorms = UserDorm.objects.filter(userid=match_user.userid).values()
         results = UserResults.objects.filter(userid=match_user.userid).values()
+        # print(match_user)
 
 
         # print("matched user", results, len(results))
@@ -58,6 +59,7 @@ def get_matches_users(request):
 
         matches.append({
             'id': match_user.userid,
+            'caseid': match_user.caseid,
             'grade': match_user.grade,
             'name': f"{match_user.first_name} {match_user.last_name}",
             'age': match_user.age,
@@ -75,13 +77,38 @@ def get_matches_users(request):
 
     return Response(matches)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def swipes_right(request):
+    user = request.user
+    caseid1 = user.caseid
+    print("user", user)
+    print("case id 1", caseid1)
+
+    data = request.data
+    print(request)
+    caseid2 = data.get('caseid2')  # you only send caseid2 now
+    # print("caseid2", caseid2)
+
+    if not caseid2:
+        return JsonResponse({'error': 'Missing caseid2'}, status=400)
+
+    try:
+        match = UserScore.objects.get(caseid1=caseid1, caseid2=caseid2)
+        match.swiped = True
+        match.save()
+        return JsonResponse({'message': 'Swiped status updated successfully'})
+    except UserScore.DoesNotExist:
+        return JsonResponse({'error': 'Match not found'}, status=404)
+
+
 #view that gets all matches of logged in user (can change to top)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_matches(request):
     user = request.user
 
-    scores = UserScore.objects.filter(caseid1=user).order_by('-score')
+    scores = UserScore.objects.filter(caseid1=user, swiped=True).order_by('-score')
 
     # print(f"Found {scores.count()} scores for user {user.caseid}")  # Add logging to see the results
 
@@ -103,10 +130,12 @@ def get_matches(request):
             "inRoom": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"]}
         
         reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
+        print("Reverse score", UserScore.objects.filter(caseid1=match_user, caseid2=user))
         
         if reverse_score:
             matches.append({
                 'id': match_user.userid,
+                'caseid': match_user.caseid,
                 'grade': match_user.grade,
                 'name': f"{match_user.first_name} {match_user.last_name}",
                 'age': match_user.age,

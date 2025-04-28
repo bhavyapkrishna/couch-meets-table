@@ -35,31 +35,61 @@ const SwipingPage = () => {
         fetchMatches();
     }, []);
 
-
     // Handle Swiping (Next Profile)
     const handleNo = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1));
 
     };
 
-    const handleYes = () => {
+    const handleYes = (caseid2) => {
+        console.log("case id 2", caseid2)
         setCurrentIndex((prevIndex) => (prevIndex + 1));
 
+        const accessToken = localStorage.getItem("access_token");
+
+        fetch('http://127.0.0.1:8000/api/swipes_right/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                caseid2: caseid2   // 👈 only send caseid2 now
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update swiped status');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Successfully updated swiped:", data);
+            })
+            .catch(error => console.error('Error updating swiped:', error));
     };
 
     // Get the current profile
     const profile = profiles[currentIndex];
 
-    if (!profile) {
-        return <div>Loading...</div>;
-    }
+    console.log(profile)
 
-    if (currentIndex >= profiles.length) {
+    if (profiles.length === 0) {
         return (
             <div className="d-flex flex-column min-vh-100">
                 <Navbar />
                 <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
-                    <h2>Out of Matches!</h2>
+                    <h1 className="h3 custom-txt">Loading...</h1>
+                </Container>
+            </div>
+        );
+    }
+    else if (currentIndex >= profiles.length) {
+        return (
+            <div className="d-flex flex-column min-vh-100">
+                <Navbar/>
+                <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
+                    <h1 className="h3 custom-txt">Out of Matches!</h1>
                 </Container>
             </div>
         );
@@ -75,7 +105,7 @@ const SwipingPage = () => {
 
                     {/* Reject Button */}
                     <Col xs={2} className="text-center">
-                        <Button variant="secondary" className="rounded-circle p-4" onClick={handleNo}>
+                        <Button variant="secondary" className="rounded-circle p-4" onClick={() => handleNo}>
                             <FaTimes size={32} />
                         </Button>
                     </Col>
@@ -99,11 +129,11 @@ const SwipingPage = () => {
                             {/* Info Section */}
                             <Col md={7}>
                                 <h3><strong>{profile.name}, {profile.age}</strong></h3>
-                                <h5 className="text-primary"><strong>{profile.matchPercentage}%</strong></h5>
+                                <h5 className="custom-txt"><strong>{profile.matchPercentage}% Match</strong></h5>
 
                                 <p><strong>Grade:</strong> {profile.grade}</p>
                                 <p><strong>Major:</strong> {profile.major}</p>
-                                <p><strong>Dorm Preference:</strong> {profile.dorms}</p>
+                                <p><strong>Dorm Preference:</strong> {profile.dorms.join(", ")}</p>
 
                                 <hr />
 
@@ -121,9 +151,10 @@ const SwipingPage = () => {
 
                     {/* Accept Button */}
                     <Col xs={2} className="text-center">
-                        <Button variant="primary" className="rounded-circle p-4" onClick={handleYes}>
+
+                        <button className="rounded-circle p-4 custom-btn" onClick={() => handleYes(profile.caseid)}>
                             <FaCheck size={32} />
-                        </Button>
+                        </button>
                     </Col>
                 </Row>
             </Container>

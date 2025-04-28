@@ -109,7 +109,7 @@ const MatchesPage = () => {
         {/* Modal */}
         <Modal show={showModal} onHide={handleClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>{selectedMatch?.name}</Modal.Title>
+            <Modal.Title>{selectedMatch?.name} - {selectedMatch?.caseid}@case.edu</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedMatch && (
