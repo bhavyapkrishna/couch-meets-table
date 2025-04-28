@@ -24,7 +24,8 @@ const MatchesPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setMatches(data); 
+          console.log("Fetched matches:", data); 
+          setMatches(data);
         } else {
           console.error("Error fetching matches:", response.statusText);
         }
@@ -35,6 +36,7 @@ const MatchesPage = () => {
 
     fetchMatches();
   }, []);
+
 
   const handleNameClick = (match) => {
     setSelectedMatch(match);
