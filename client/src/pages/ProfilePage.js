@@ -72,6 +72,8 @@ const ProfilePage = () => {
                     bio: data.bio,
                     email: data.email,
                     dorms: data.dorms || [],
+                    profile_photo: data.profile_photo,
+                    media_url: data.media_url,
                 },
                 quizResponse,
             };
@@ -140,6 +142,18 @@ const ProfilePage = () => {
     }
 
 
+    console.log('profile url', profileData.profile.profile_photo)
+    console.log('path url', profileData.profile.media_url)
+    let profilePhotoSource;
+    if (profileData.profile.profile_photo) {
+        // Construct the URL.  This is the crucial part.
+        profilePhotoSource =  `${profileData.profile.media_url}${profileData.profile.profile_photo}`;
+    } else {
+        profilePhotoSource = profilePic; // Use the default.
+    }
+
+
+
     return (
         <div className="min-vh-100 d-flex flex-column overflow-hidden">
             <Navbar />
@@ -152,7 +166,7 @@ const ProfilePage = () => {
                         {/*TEMP*/}
                         <Col md={4} className="text-center">
                             <Image
-                                src={profilePic}
+                                src={profilePhotoSource}
                                 rounded
                                 fluid
                                 className="border border-primary p-1"
@@ -172,7 +186,7 @@ const ProfilePage = () => {
 
                             <hr />
                             <div className="quiz-response">
-                            {profileData.quizResponse.map((response, index) => (
+                                {profileData.quizResponse.map((response, index) => (
                                     <p key={index} className="mb-2">
                                         <strong>{response.label}:</strong> {response.displayValue}
                                     </p>

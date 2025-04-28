@@ -31,6 +31,7 @@ class CustomUser(AbstractBaseUser):
     bio = models.TextField(null=True, blank=True)
     email = models.EmailField(unique=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    profile_photo = models.CharField(max_length=100)
 
     is_active = models.BooleanField(default=True)  
     last_login = None

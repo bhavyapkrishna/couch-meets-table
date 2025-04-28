@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cmtserver',
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -175,3 +176,6 @@ SIMPLE_JWT = {
     "JTI_CLAIM": "jti",
 }
 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

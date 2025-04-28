@@ -2,13 +2,14 @@ from rest_framework import serializers
 from .models import CustomUser, UserDorm, UserResults, UserIdeal, UserImportant
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.conf import settings
 
 class UserResultsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserResults
         fields = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
         extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
         }
 
 class UserIdealSerializer(serializers.ModelSerializer):
@@ -16,7 +17,7 @@ class UserIdealSerializer(serializers.ModelSerializer):
         model = UserIdeal
         fields = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
         extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
         }
 
 class UserImportantSerializer(serializers.ModelSerializer):
@@ -24,14 +25,14 @@ class UserImportantSerializer(serializers.ModelSerializer):
         model = UserImportant
         fields = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
         extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
         }
 
 class UserDormSerializer(serializers.ModelSerializer):
     model = UserDorm
     fields = ['dorm']
     extra_kwargs = {
-            'userID': {'write_only': True}
+            'userid': {'write_only': True}
     }
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -67,10 +68,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
     preferences = serializers.SerializerMethodField()
     important = serializers.SerializerMethodField()
     dorms = serializers.SerializerMethodField()
+    profile_photo = serializers.CharField()
+    media_url = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'caseid', 'age', 'grade', 'major', 'bio', 'results', 'preferences', 'important', 'dorms']
+        fields = ['email', 'first_name', 'last_name', 'caseid', 'age', 'grade', 'major', 'bio', 'results', 'preferences', 'important', 'dorms', 'profile_photo', 'media_url']
 
     def get_results(self, obj):
         try:
@@ -93,6 +96,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_dorms(self, obj):
         dorms = UserDorm.objects.filter(userid=obj)
         return [d.dorm for d in dorms]
+    
+    def get_media_url(self, obj):
+        return settings.MEDIA_URL
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
