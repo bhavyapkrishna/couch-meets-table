@@ -84,7 +84,7 @@ const SwipingPage = () => {
                         <div className="spinner-border text-primary" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </div>
-                        <h1 className="h3 custom-txt">Loading...</h1>
+                        <h1 className="h3 custom-txt">Calculating...</h1>
                     </div>
                 </Container>
             </div>
