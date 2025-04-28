@@ -78,6 +78,7 @@ function Navbar() {
                 <div className="ms-auto me-3 d-flex gap-3">
                     {["/swiping", "/matches", "/profile"].includes(pathname) && (
                     // {(user.quizResponse.length > 0) ? (
+                    // ) : (
                         <>
                             <Link
                                 to="/swiping"
@@ -92,16 +93,32 @@ function Navbar() {
                                 Profile
                             </Link>
 
-                            <button onClick={handleLogOut} className="btn btn-link text-white text-decoration-none">
+                            {/* <button onClick={handleLogOut} className="btn btn-link text-white text-decoration-none">
                                 Logout
                             </button>
 
                             <button onClick={handleDeleteAcc} className="btn btn-link text-white text-decoration-none">
                                 Delete Account
+                            </button> */}
+                            <button
+                                onClick={handleLogOut}
+                                className={`text-white text-decoration-none bg-transparent border-0 p-0 m-0 ${pathname === "/logout" ? "fw-bold border-bottom border-white" : ""}`}
+                                style={{ cursor: "pointer" }}
+                            >
+                                Logout
                             </button>
+
+                            <button
+                                onClick={handleDeleteAcc}
+                                className={`text-white text-decoration-none bg-transparent border-0 p-0 m-0 ${pathname === "/delete-account" ? "fw-bold border-bottom border-white" : ""}`}
+                                style={{ cursor: "pointer" }}
+                            >
+                                Delete Account
+                            </button>
+
                         </>
                     )}
-                    // ) : (
+
                     {["/", "/signup", "/login", "/quiz", "/createProfile"].includes(pathname) && (
                         <>
                             <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>
