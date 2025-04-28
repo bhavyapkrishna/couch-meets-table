@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Card, Image, Button } from "react-bootstrap";
+import profilePic from "../assets/images/stock.jpg";
 import Navbar from "../components/Navbar";
 import { FaTimes, FaCheck } from "react-icons/fa";
 
@@ -54,7 +55,7 @@ const SwipingPage = () => {
                 'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify({
-                caseid2: caseid2   // 👈 only send caseid2 now
+                caseid2: caseid2
             })
         })
             .then(response => {
@@ -87,7 +88,7 @@ const SwipingPage = () => {
     else if (currentIndex >= profiles.length) {
         return (
             <div className="d-flex flex-column min-vh-100">
-                <Navbar/>
+                <Navbar />
                 <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
                     <h1 className="h3 custom-txt">Out of Matches!</h1>
                 </Container>
@@ -124,6 +125,18 @@ const SwipingPage = () => {
                                 {/*    alt="Profile"*/}
                                 {/*/>*/}
                                 {/*<p className="text-muted mt-2">matched • {profile.id}</p>*/}
+                                <Image
+                                    src={
+                                        profile.profile_photo
+                                            ? `${profile.media_url}${profile.profile_photo}`
+                                            : profilePic
+                                    }
+                                    rounded
+                                    fluid
+                                    className="border border-primary p-1"
+                                    style={{ maxWidth: "300px", height: "auto", borderRadius: "10px" }}
+                                    alt="Profile"
+                                />
                             </Col>
 
                             {/* Info Section */}

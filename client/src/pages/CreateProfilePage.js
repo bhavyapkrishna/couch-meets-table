@@ -31,7 +31,7 @@ const CreateProfilePage = () => {
 
     useEffect(() => {
         if (user?.profile) {
-            setProfile(user.profile);
+            //setProfile(user.profile);
         }
     }, []);
 
