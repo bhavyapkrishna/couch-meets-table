@@ -20,9 +20,11 @@ function App() {
                   <Route path="/signup" element={<SignUpPage />} />
                   <Route path="/quiz" element={<QuizPage />} />
                   <Route path="/createProfile" element={<CreateProfilePage />} />
+
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/swiping" element={<ProtectedRoute><SwipePage /></ProtectedRoute>} />
-                  <Route path="/matches" element={<MatchesPage />} />
+                  <Route path="/matches" element={<ProtectedRoute><MatchesPage /></ProtectedRoute>} />
+                  
                   <Route path="*" element={<h2>404: Page Not Found</h2>} />
               </Routes>
       </UserProvider>

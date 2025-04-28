@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserProvider";
 import Navbar from "../components/Navbar";
 import Modal from "react-bootstrap/Modal";
@@ -10,6 +10,31 @@ const MatchesPage = () => {
   const [matches, setMatches] = useState([]);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+//backend fetching
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const response = await fetch("/api/matches/", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setMatches(data); // Set the matches state with the response data
+        } else {
+          console.error("Error fetching matches:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching matches:", error);
+      }
+    };
+
+    fetchMatches();
+  }, []);
 
   const handleNameClick = (match) => {
     setSelectedMatch(match);
@@ -38,30 +63,37 @@ const MatchesPage = () => {
               </tr>
             </thead>
             <tbody>
-              {matches.map((match) => (
-                <tr key={match.id}>
-                  <td>
-                    <button 
-                      onClick={() => handleNameClick(match)} 
-                      className="btn btn-link custom-txt text-decoration-none"
-                    >
-                      {match.name} (Age: {match.age})
-                    </button>
-                  </td>
-                  <td>
-                    <span className={`badge fs-6" ${
-                      match.matchPercentage >= 90
-                        ? "bg-success"
-                        : match.matchPercentage >= 75
-                        ? "bg-warning"
-                        : "bg-danger"
-                    }`}
-                    >
-                      {match.matchPercentage}%
-                    </span>
-                  </td>
+              {matches.length === 0 ? (
+                <tr>
+                  <td colSpan="2">No matches found.</td>
                 </tr>
-              ))}
+              ) : (
+                matches.map((match) => (
+                  <tr key={match.id}>
+                    <td>
+                      <button
+                        onClick={() => handleNameClick(match)}
+                        className="btn btn-link custom-txt text-decoration-none"
+                      >
+                        {match.name} (Age: {match.age})
+                      </button>
+                    </td>
+                    <td>
+                      <span
+                        className={`badge fs-6 ${
+                          match.matchPercentage >= 90
+                            ? "bg-success"
+                            : match.matchPercentage >= 75
+                            ? "bg-warning"
+                            : "bg-danger"
+                        }`}
+                      >
+                        {match.matchPercentage}%
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -87,7 +119,6 @@ const MatchesPage = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-
       </div>
     </div>
   );
