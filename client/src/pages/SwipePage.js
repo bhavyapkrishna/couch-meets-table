@@ -37,19 +37,32 @@ const SwipingPage = () => {
 
 
     // Handle Swiping (Next Profile)
-    const handleSwipe = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % profiles.length);
+    const handleNo = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1));
+
+    };
+
+    const handleYes = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1));
+
     };
 
     // Get the current profile
     const profile = profiles[currentIndex];
 
-
-
-
     if (!profile) {
         return <div>Loading...</div>;
     }
+
+    if (currentIndex >= profiles.length) {
+    return (
+        <div className="d-flex flex-column min-vh-100">
+            <Navbar />
+            <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
+                <h2>Out of Matches!</h2>
+            </Container>
+        </div>
+    );
 
     return (
         <div className="d-flex flex-column min-vh-100">
@@ -61,7 +74,7 @@ const SwipingPage = () => {
 
                     {/* Reject Button */}
                     <Col xs={2} className="text-center">
-                        <Button variant="secondary" className="rounded-circle p-4" onClick={handleSwipe}>
+                        <Button variant="secondary" className="rounded-circle p-4" onClick={handleNo}>
                             <FaTimes size={32} />
                         </Button>
                     </Col>
@@ -107,7 +120,7 @@ const SwipingPage = () => {
 
                     {/* Accept Button */}
                     <Col xs={2} className="text-center">
-                        <Button variant="primary" className="rounded-circle p-4" onClick={handleSwipe}>
+                        <Button variant="primary" className="rounded-circle p-4" onClick={handleYes}>
                             <FaCheck size={32} />
                         </Button>
                     </Col>
