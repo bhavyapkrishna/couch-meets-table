@@ -6,7 +6,6 @@ from .models import UserResults, UserImportant, UserIdeal, UserScore
 from .utils import determineCompatability
 
 def calculate_scores_background(instance):
-    # print("calculating")
     try:
         userImpo = UserImportant.objects.get(userid=instance)
         userImpoArray = [userImpo.wakeTime, userImpo.sleepTime, userImpo.noise, userImpo.messiness, userImpo.guests, userImpo.inRoom]

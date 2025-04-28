@@ -16,8 +16,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.utils.text import get_valid_filename
 import os
 
-# Create your views here.
-
 #view for registering user
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -26,7 +24,6 @@ class RegisterView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #view for uploading user profile photo
@@ -67,17 +64,14 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 @permission_classes([IsAuthenticated])
 def get_matches_users(request):
     user = request.user
-    scores = UserScore.objects.filter(caseid1=user, swiped=False).order_by("-score")
+    scores = UserScore.objects.filter(caseid1=user, swiped=False).order_by("-score") #does not show users twice for swiping
     matches = []
     for score in scores:
         match_user = score.caseid2
         dorms = UserDorm.objects.filter(userid=match_user.userid).values()
         results = UserResults.objects.filter(userid=match_user.userid).values()
-        # print(match_user)
 
-
-        # print("matched user", results, len(results))
-
+        # maps values to labels
         options = {
             "wakeTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
             "sleepTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
@@ -108,18 +102,15 @@ def get_matches_users(request):
 
     return Response(matches)
 
+# set swiped true
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def swipes_right(request):
     user = request.user
     caseid1 = user.caseid
-    print("user", user)
-    print("case id 1", caseid1)
 
     data = request.data
-    print(request)
     caseid2 = data.get('caseid2')
-    # print("caseid2", caseid2)
 
     if not caseid2:
         return JsonResponse({'error': 'Missing caseid2'}, status=400)
@@ -133,24 +124,20 @@ def swipes_right(request):
         return JsonResponse({'error': 'Match not found'}, status=404)
 
 
-#view that gets all matches of logged in user (can change to top)
+#view that gets all matches of logged in user
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_matches(request):
     user = request.user
 
+    # user swiped right
     scores = UserScore.objects.filter(caseid1=user, swiped=True).order_by('-score')
-
-    # print(f"Found {scores.count()} scores for user {user.caseid}")  
 
     matches = []
     for score in scores:
         match_user = score.caseid2
         dorms = UserDorm.objects.filter(userid=match_user.userid).values()
         results = UserResults.objects.filter(userid=match_user.userid).values()
-
-
-        # print("matched user", results, len(results))
 
         options = {
             "wakeTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
@@ -160,8 +147,8 @@ def get_matches(request):
             "guests": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"],
             "inRoom": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"]}
         
-        reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
-        print("Reverse score", UserScore.objects.filter(caseid1=match_user, caseid2=user))
+        #user swiped right on
+        reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first() 
         
         if reverse_score:
             matches.append({
@@ -182,18 +169,8 @@ def get_matches(request):
                 'inRoom': options["inRoom"][results[0]["inRoom"]-1],
             })
 
-        # print(f"Match found for {user.caseid} with {match_user.caseid}: {score.score}")
-        # matches.append({
-        #         'id': match_user.userid,
-        #         'name': f"{match_user.first_name} {match_user.last_name}",
-        #         'age': match_user.age,
-        #         'major': match_user.major,
-        #         'dorms': [dorm['dorm'] for dorm in dorms],
-        #         'bio': match_user.bio,
-        #         'matchPercentage': score.score,
-        # })
-
     return Response(matches)
+
 #view for logout
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
