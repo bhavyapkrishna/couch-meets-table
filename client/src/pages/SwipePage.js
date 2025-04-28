@@ -55,14 +55,15 @@ const SwipingPage = () => {
     }
 
     if (currentIndex >= profiles.length) {
-    return (
-        <div className="d-flex flex-column min-vh-100">
-            <Navbar />
-            <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
-                <h2>Out of Matches!</h2>
-            </Container>
-        </div>
-    );
+        return (
+            <div className="d-flex flex-column min-vh-100">
+                <Navbar />
+                <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
+                    <h2>Out of Matches!</h2>
+                </Container>
+            </div>
+        );
+    }
 
     return (
         <div className="d-flex flex-column min-vh-100">
