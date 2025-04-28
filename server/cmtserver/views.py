@@ -35,19 +35,16 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 # view that gets the scores
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_matches(request):
+def get_matchesUsers(request):
     user_caseid = request.GET.get('caseid')
-
     if not user_caseid:
         return JsonResponse({"error": "caseid parameter required"}, status=400)
-
     try:
         user = CustomUser.objects.get(caseid=user_caseid)  # 🔥
     except CustomUser.DoesNotExist:
         return JsonResponse({"error": "User not found"}, status=404)
 
     matches = UserScore.objects.filter(caseid1=user)  # 🔥
-
     profiles = []
     for match in matches:
         try:
