@@ -73,7 +73,14 @@ const SwipingPage = () => {
     // Get the current profile
     const profile = profiles[currentIndex];
 
-    console.log(profile)
+    console.log(profile);
+
+    let profilePhotoSource;
+    if (profile && profile.profile_photo && profile.media_url) {
+        profilePhotoSource = `${profile.media_url}${profile.profile_photo}`;
+    } else {
+        profilePhotoSource = profilePic;
+    }
 
     if (profiles.length === 0) {
         return (
@@ -99,13 +106,6 @@ const SwipingPage = () => {
                 </Container>
             </div>
         );
-    }
-
-    let profilePhotoSource;
-    if (profile && profile.profile_photo) {
-        profilePhotoSource = `${profile.media_url}${profile.profile_photo}`;
-    } else {
-        profilePhotoSource = profilePic;
     }
 
     return (
@@ -142,7 +142,7 @@ const SwipingPage = () => {
                                     rounded
                                     fluid
                                     className="border border-primary p-1"
-                                    style={{ maxWidth: "300px", height: "auto", borderRadius: "10px" }}
+                                    style={{ maxWidth: "250px", height: "auto", borderRadius: "10px" }}
                                     alt="Profile"
                                 />
                             </Col>

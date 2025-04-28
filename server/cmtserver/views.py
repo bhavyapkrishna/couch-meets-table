@@ -102,6 +102,8 @@ def get_matches_users(request):
             'messiness': options["messiness"][results[0]["messiness"]-1],
             'guests': options["guests"][results[0]["guests"]-1],
             'inRoom': options["inRoom"][results[0]["inRoom"]-1],
+            'media_url': settings.MEDIA_URL,
+            'profile_photo': match_user.profile_photo,
         })
 
     return Response(matches)
