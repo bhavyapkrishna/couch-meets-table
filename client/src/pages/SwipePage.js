@@ -118,7 +118,7 @@ const SwipingPage = () => {
 
                     {/* Reject Button */}
                     <Col xs={2} className="text-center">
-                        <Button variant="secondary" className="rounded-circle p-4" onClick={() => handleNo}>
+                        <Button variant="secondary" className="rounded-circle p-4" onClick={handleNo}>
                             <FaTimes size={32} />
                         </Button>
                     </Col>
