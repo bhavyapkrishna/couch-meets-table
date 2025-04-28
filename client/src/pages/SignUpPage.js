@@ -38,6 +38,22 @@ const SignUpPage = () => {
             console.log("results: ", results)
             console.log("preferences", ideal)
             console.log("important", important)
+
+            console.log("About to register user with data: ", {
+                'caseid': user.profile.caseid,
+                'first_name': user.profile.first_name,
+                'last_name': user.profile.last_name,
+                'age': user.profile.age,
+                'grade': user.profile.grade,
+                'major': user.profile.major,
+                'bio': user.profile.bio,
+                'email': email,
+                'password': password,
+                'results': results,
+                'preferences': ideal,
+                'important': important,
+                'dorms': user.profile.dorms
+            });
             
             const registerResponse = await fetch('http://localhost:8000/api/register/', {
                 method: 'POST',
@@ -62,10 +78,9 @@ const SignUpPage = () => {
             });
     
             if (!registerResponse.ok) {
-                const errorData = await registerResponse.json();
-                console.error('Error creating user:', errorData);
+                const errorText = await registerResponse.text();  // <-- Read it as text
+                console.error('Error creating user:', errorText);  // <-- See the real Django error
                 alert('Error creating user.');
-                return;
             }
     
             const tokenResponse = await fetch("http://localhost:8000/api/token/", {

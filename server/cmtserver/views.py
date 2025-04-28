@@ -1,3 +1,5 @@
+from functools import partial
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -71,3 +73,28 @@ def logout(request):
         return Response(status=status.HTTP_205_RESET_CONTENT)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+# for profile editing
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    user = request.user
+    data = request.data.copy()
+
+    dorms = data.pop('dorms', None)
+
+    serializer = UserProfileSerializer(user, data=data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+
+        if dorms is not None:
+            from .models import UserDorm
+
+            UserDorm.objects.filter(userid=user).delete()
+
+            for dorm in dorms:
+                UserDorm.objects.create(userid=user, dorm=dorm)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

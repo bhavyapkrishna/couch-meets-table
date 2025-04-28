@@ -22,8 +22,8 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser):
     userid = models.AutoField(primary_key=True)
     caseid = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100, default="")
-    last_name = models.CharField(max_length=100, default="")
+    first_name = models.CharField(max_length=100, default="null")
+    last_name = models.CharField(max_length=100, default="null")
     age = models.PositiveIntegerField(default=19)
     grade = models.CharField(max_length=100)
     major = models.CharField(max_length=100)

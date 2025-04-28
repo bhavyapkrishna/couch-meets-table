@@ -9,4 +9,13 @@ module.exports = function(app) {
       logLevel: 'debug'
     })
   );
+
+  app.use(
+      '/profile',
+      createProxyMiddleware({
+          target: 'http://localhost:8000',
+          changeOrigin: true,
+          logLevel: 'debug'
+      })
+  )
 };

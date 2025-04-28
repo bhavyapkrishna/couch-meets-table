@@ -31,9 +31,19 @@ const CreateProfilePage = () => {
 
     useEffect(() => {
         if (user?.profile) {
+            // console.log('user profile: ', user.profile);
             setProfile(user.profile);
+        } else {
+            setProfile({
+                first_name: '',
+                last_name: '',
+                age: '',
+                grade: '',
+                major: '',
+                bio: '',
+            });
         }
-    }, []);
+    }, [user]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -69,7 +79,14 @@ const CreateProfilePage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setUser((prev) => ({ ...prev, profile }));
+
+        // Save profile locally in UserContext
+        setUser((prev) => ({
+            ...prev,
+            profile: profile,  // Save the profile info user entered
+        }));
+
+        // Navigate to SignUpPage
         navigate("/signup");
     };
 
@@ -81,33 +98,68 @@ const CreateProfilePage = () => {
                 <form onSubmit={handleSubmit} className="row g-3">
                     <div className="col-md-6">
                         <label className="form-label">Case ID:</label>
-                        <input type="text" className="form-control" name="caseid" value={profile.caseid} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="caseid"
+                            value={profile.caseid || ""}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     <div className="col-md-6">
                         <label className="form-label">First Name:</label>
-                        <input type="text" className="form-control" name="first_name" value={profile.first_name} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="first_name"
+                            value={profile.first_name || ""}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     <div className="col-md-6">
                         <label className="form-label">Last Name:</label>
-                        <input type="text" className="form-control" name="last_name" value={profile.last_name} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="last_name"
+                            value={profile.last_name || ""}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     <div className="col-md-3">
                         <label className="form-label">Age:</label>
-                        <input type="number" className="form-control" name="age" value={profile.age} onChange={handleChange} required />
+                        <input
+                            type="number"
+                            className="form-control"
+                            name="age"
+                            value={profile.age || ""}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     <div className="col-md-6">
                         <label className="form-label">Grade:</label>
-                        <select className="form-select" name="grade" value={profile.grade} onChange={handleGradeChange} required >
+                        <select
+                            className="form-select"
+                            name="grade"
+                            value={profile.grade || ""}
+                            onChange={handleGradeChange}
+                            required
+                        >
                             <option value="">Select Grade</option>
                             <option value="Freshman">Freshman</option>
                             <option value="Sophomore">Sophomore</option>
                             <option value="Junior">Junior</option>
                             <option value="Senior">Senior</option>
                         </select>
+
                     </div>
 
                     {profile.grade && (
-                        <div className = "col-12">
+                        <div className="col-12">
                             <label className="form-label">Dorm Preference:</label>
                             {/*<select name="dorms" value={profile.dorms} onChange={handleChange} multiple required>*/}
                             {/*    {dormOptions[profile.grade].map((dorm, index) => (*/}
@@ -123,7 +175,7 @@ const CreateProfilePage = () => {
                                 className="basic-multi-select"
                                 classNamePrefix="select"
                                 options={dormOptions}
-                                value={dormOptions.filter(option => profile.dorms.includes(option.value))}
+                                value={dormOptions.filter(option => (profile.dorms || []).includes(option.value))}
                                 onChange={handleDormChange}
                                 getOptionLabel={(e) => e.label}
                                 getOptionValue={(e) => e.value}
@@ -133,11 +185,25 @@ const CreateProfilePage = () => {
 
                     <div className="col-md-6">
                         <label className="form-label">Major:</label>
-                        <input type="text" className="form-control" name="major" value={profile.major} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="major"
+                            value={profile.major || ""}
+                            onChange={handleChange}
+                            required
+                        />
+
                     </div>
                     <div className="col-md-6">
                         <label className="form-label">Bio:</label>
-                        <textarea className="form-control" name="bio" value={profile.bio} onChange={handleChange}></textarea>
+                        <textarea
+                            className="form-control"
+                            name="bio"
+                            value={profile.bio || ""}
+                            onChange={handleChange}
+                        />
+
                     </div>
 
                     <div className="col-md-6">
