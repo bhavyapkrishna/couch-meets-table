@@ -5,7 +5,7 @@ from rest_framework.decorators import permission_classes, api_view
 from rest_framework.views import APIView
 from .serializers import CustomUserSerializer, UserProfileSerializer, CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import UserScore, CustomUser, UserResults
+from .models import UserScore, CustomUser, UserResults, UserDorm
 from django.http import JsonResponse
 
 # Create your views here.
@@ -32,6 +32,7 @@ def get_current_user_profile(request):
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+'''
 # view that gets the scores
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -67,6 +68,7 @@ def get_matches(request):
             continue
 
     return JsonResponse(profiles, safe=False)
+'''
 
 # @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
@@ -99,14 +101,15 @@ def get_matches(request):
 
     scores = UserScore.objects.filter(caseid1=user).order_by('-score')
 
-    print(f"Found {scores.count()} scores for user {user.username}")  # Add logging to see the results
+    print(f"Found {scores.count()} scores for user {user.caseid}")  # Add logging to see the results
 
     matches = []
     for score in scores:
         match_user = score.caseid2
+        dorms = UserDorm.objects.filter(userid=match_user.userid).values()
 
         #reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
-        print(f"Match found for {user.username} with {match_user.username}: {score.score}")
+        print(f"Match found for {user.caseid} with {match_user.caseid}: {score.score}")
 
         #if reverse_score:
         matches.append({
@@ -114,7 +117,7 @@ def get_matches(request):
                 'name': f"{match_user.first_name} {match_user.last_name}",
                 'age': match_user.age,
                 'major': match_user.major,
-                # 'dorms': [dorm.dorm for dorm in match_user.userdorm_set.all()],
+                'dorms': [dorm['dorm'] for dorm in dorms],
                 'bio': match_user.bio,
                 'matchPercentage': score.score,
         })

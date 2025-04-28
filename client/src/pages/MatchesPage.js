@@ -15,7 +15,7 @@ const MatchesPage = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const response = await fetch("/api/matches/", {
+        const response = await fetch("http://localhost:8000/api/get_matches/", {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
