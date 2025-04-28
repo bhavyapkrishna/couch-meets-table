@@ -12,8 +12,8 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from rest_framework.parsers import MultiPartParser, FormParser # Import parsers for file uploads
-from django.utils.text import get_valid_filename # Import for filename sanitization
+from rest_framework.parsers import MultiPartParser, FormParser 
+from django.utils.text import get_valid_filename
 import os
 
 # Create your views here.
@@ -43,7 +43,7 @@ class UploadProfilePhotoView(APIView):
         filename = default_storage.generate_filename(os.path.join(f'uploads/{request.user.caseid}', filename))
         filename = default_storage.save(filename, ContentFile(file_obj.read()))
 
-        file_url = default_storage.url(filename)  # Changed this line back
+        file_url = default_storage.url(filename)  
         request.user.profile_photo = file_url
         request.user.save()
 
@@ -102,6 +102,8 @@ def get_matches_users(request):
             'messiness': options["messiness"][results[0]["messiness"]-1],
             'guests': options["guests"][results[0]["guests"]-1],
             'inRoom': options["inRoom"][results[0]["inRoom"]-1],
+            'media_url': settings.MEDIA_URL,
+            'profile_photo': match_user.profile_photo,
         })
 
     return Response(matches)
@@ -116,7 +118,7 @@ def swipes_right(request):
 
     data = request.data
     print(request)
-    caseid2 = data.get('caseid2')  # you only send caseid2 now
+    caseid2 = data.get('caseid2')
     # print("caseid2", caseid2)
 
     if not caseid2:
@@ -139,7 +141,7 @@ def get_matches(request):
 
     scores = UserScore.objects.filter(caseid1=user, swiped=True).order_by('-score')
 
-    # print(f"Found {scores.count()} scores for user {user.caseid}")  # Add logging to see the results
+    # print(f"Found {scores.count()} scores for user {user.caseid}")  
 
     matches = []
     for score in scores:

@@ -2,10 +2,9 @@ import os
 import sys
 import django
 
-# 👇 Add this so Python can find your project
+
 sys.path.append("/Users/chio/Desktop/csds395/couch-meets-table/server")
 
-# 👇 Now Django knows where settings are
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 django.setup()
 
