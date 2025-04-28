@@ -5,46 +5,6 @@ import Navbar from "../components/Navbar";
 import { FaTimes, FaCheck } from "react-icons/fa";
 
 // Profile Data Array
-// const profiles = [
-//     {
-//         id: 1,
-//         name: "Angela",
-//         age: 19,
-//         matchPercentage: "80%",
-//         major: "Computer Science",
-//         grade: "Sophomore",
-//         dorm: "Alumni, Tippit",
-//         wakesUp: "7:00 AM",
-//         sleepsAt: "11:00 PM",
-//         noiseLevel: "Pretty quiet",
-//         messiness: "Pretty clean",
-//         guests: "Barely",
-//         inRoom: "Always",
-//         goesOut: "Never",
-//         image: "/assets/images/SampleMatchingPic.webp"
-//     },
-//     {
-//         id: 2,
-//         name: "Mike",
-//         age: 20,
-//         matchPercentage: "85%",
-//         major: "Mechanical Engineering",
-//         grade: "Junior",
-//         dorm: "Tippit, Alumni",
-//         wakesUp: "6:30 AM",
-//         sleepsAt: "12:00 AM",
-//         noiseLevel: "Moderate",
-//         messiness: "Slightly messy",
-//         guests: "Sometimes",
-//         inRoom: "Usually",
-//         goesOut: "Occasionally",
-//         image: "/assets/images/SampleMatchingPic2.webp"
-//     }
-// ];
-
-// const SwipingPage = () => {
-//     // Track the current profile index
-//     const [currentIndex, setCurrentIndex] = useState(0);
 const SwipingPage = () => {
     const [profiles, setProfiles] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,11 +12,16 @@ const SwipingPage = () => {
     // 🔵 Set your user case ID (who is swiping)
     const userCaseId = "abc3"; // (Change this based on your user later)
 
+
+
+
+    
+
     // 🔵 Fetch profiles from Django server
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");  // 🔥 Grab token
 
-        fetch(`http://127.0.0.1:8000/api/get_matches/?caseid=${userCaseId}`, {
+        fetch(`http://127.0.0.1:8000/api/get_matchesUsers/?caseid=${userCaseId}`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }
@@ -82,7 +47,12 @@ const SwipingPage = () => {
 
     // Get the current profile
     const profile = profiles[currentIndex];
-    console.log(profile)
+    console.log("profile", profile)
+
+
+    if (!profile) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="d-flex flex-column min-vh-100">
@@ -117,8 +87,8 @@ const SwipingPage = () => {
 
                             {/* Info Section */}
                             <Col md={7}>
-                                <h3><strong>{profile.name }, {profile.age}</strong></h3>
-                                <h5 className="text-primary"><strong>{profile.matchPercentage}%</strong></h5>
+                                <h3><strong>{profile.first_name} {profile.last_name}, {profile.age}</strong></h3>
+                                <h5 className="text-primary"><strong>{profile.score}%</strong></h5>
 
                                 <p><strong>Grade:</strong> {profile.grade}</p>
                                 <p><strong>Major:</strong> {profile.major}</p>
