@@ -10,16 +10,43 @@ const SwipingPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // 🔵 Set your user case ID (who is swiping)
-    const userCaseId = "abc3"; // (Change this based on your user later)
+    // const userCaseId = "abc3"; // (Change this based on your user later)
 
+    // getting the current case id
+    const [userCaseId, setUserCaseId] = useState("");
 
-
-
-    
-
-    // 🔵 Fetch profiles from Django server
     useEffect(() => {
-        const accessToken = localStorage.getItem("access_token");  // 🔥 Grab token
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!accessToken) {
+            console.error("No access token found");
+            return;
+        }
+
+        // 🔵 FIRST fetch the user's profile
+        fetch('http://127.0.0.1:8000/api/profile/', {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Profile fetch data:", data);
+                setUserCaseId(data.caseid);  // Save caseid
+            })
+            .catch(error => console.error('Error fetching profile:', error));
+    }, []);
+
+// 🔵 AFTER userCaseId is set, fetch matches
+    useEffect(() => {
+        if (!userCaseId) return;  // Now safe to guard here
+
+        const accessToken = localStorage.getItem("access_token");
 
         fetch(`http://127.0.0.1:8000/api/get_matchesUsers/?caseid=${userCaseId}`, {
             headers: {
@@ -37,7 +64,68 @@ const SwipingPage = () => {
                 setProfiles(data);
             })
             .catch(error => console.error('Error fetching matches:', error));
-    }, []);
+    }, [userCaseId]);
+
+
+    // const [userCaseId, setUserCaseId] = useState("");
+    //
+    // useEffect(() => {
+    //     if (!userCaseId) return;
+    //
+    //     const accessToken = localStorage.getItem("access_token");
+    //
+    //     if (!accessToken) {
+    //         console.error("No access token found");
+    //         return;
+    //     }
+    //
+    //     fetch('http://127.0.0.1:8000/api/profile/', {
+    //         headers: {
+    //             "Authorization": `Bearer ${accessToken}`
+    //         }
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch profile');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log("Profile fetch data:", data);
+    //             console.log("Case ID received:", data.caseid);
+    //
+    //             console.log("Fetched user profile:", data);
+    //             setUserCaseId(data.caseid);  // <--- Set the user's caseid from backend
+    //         })
+    //         .catch(error => console.error('Error fetching profile:', error));
+    // }, []);
+    //
+    // console.log("current user", userCaseId)
+    //
+    //
+    //
+    //
+    // // 🔵 Fetch profiles from Django server
+    // useEffect(() => {
+    //     const accessToken = localStorage.getItem("access_token");  // 🔥 Grab token
+    //
+    //     fetch(`http://localhost:8000/api/get_matchesUsers/?caseid=${userCaseId}`, {
+    //         headers: {
+    //             "Authorization": `Bearer ${accessToken}`
+    //         }
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch matches');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log("Fetched matches:", data);
+    //             setProfiles(data);
+    //         })
+    //         .catch(error => console.error('Error fetching matches:', error));
+    // }, []);
 
 
     // Handle Swiping (Next Profile)
