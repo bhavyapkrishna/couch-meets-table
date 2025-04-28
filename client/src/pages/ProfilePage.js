@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import Navbar from "../components/Navbar";
-import profilePic from "../assets/images/SampleProfilePic.webp";
+import profilePic from "../assets/images/stock.jpg";
 import { UserContext } from "../UserProvider";
 import { fetchDataWithTokenRefresh } from '../auth/authServices';
 
@@ -141,15 +141,11 @@ const ProfilePage = () => {
         );
     }
 
-
-    console.log('profile url', profileData.profile.profile_photo)
-    console.log('path url', profileData.profile.media_url)
     let profilePhotoSource;
     if (profileData.profile.profile_photo) {
-        // Construct the URL.  This is the crucial part.
         profilePhotoSource =  `${profileData.profile.media_url}${profileData.profile.profile_photo}`;
     } else {
-        profilePhotoSource = profilePic; // Use the default.
+        profilePhotoSource = profilePic; 
     }
 
 
