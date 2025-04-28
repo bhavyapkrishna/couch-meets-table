@@ -8,6 +8,7 @@ import QuizPage from "./pages/QuizPage";
 import CreateProfilePage from "./pages/CreateProfilePage";
 import ProfilePage from "./pages/ProfilePage";
 import SwipePage from "./pages/SwipePage";
+import MatchesPage from "./pages/MatchesPage";
 import {UserProvider} from "./UserProvider";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                   <Route path="/createProfile" element={<CreateProfilePage />} />
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/swiping" element={<ProtectedRoute><SwipePage /></ProtectedRoute>} />
+                  <Route path="/matches" element={<MatchesPage />} />
                   <Route path="*" element={<h2>404: Page Not Found</h2>} />
               </Routes>
       </UserProvider>
