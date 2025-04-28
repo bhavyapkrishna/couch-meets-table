@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
+from django.conf import settings
 
 
 #user manager model
@@ -20,8 +21,8 @@ class CustomUserManager(BaseUserManager):
 
 #normal user model
 class CustomUser(AbstractBaseUser):
-    userid = models.AutoField(primary_key=True)
-    caseid = models.CharField(max_length=100)
+    userid = models.AutoField(primary_key=True, )
+    caseid = models.CharField(max_length=100, unique=True)
     first_name = models.CharField(max_length=100, default="")
     last_name = models.CharField(max_length=100, default="")
     age = models.PositiveIntegerField(default=19)
@@ -114,3 +115,33 @@ class UserImportant(models.Model):
     class Meta:
         db_table = 'user_important'
         managed = False
+
+class UserScore(models.Model):
+    scoreid = models.IntegerField(primary_key=True, db_column='scoreid')
+    caseid1 = models.ForeignKey(
+        CustomUser,
+        related_name='scores_given',
+        to_field='caseid',
+        on_delete=models.CASCADE,
+        db_column='caseid1'
+    )
+    caseid2 = models.ForeignKey(
+        CustomUser,
+        related_name='scores_received',
+        to_field='caseid',
+        on_delete=models.CASCADE,
+        db_column='caseid2'
+    )
+    score = models.IntegerField()
+    swiped = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'user_scores'
+        managed = False
+        unique_together = ('caseid1', 'caseid2')
+
+    def __str__(self):
+        return f"{self.caseid1.caseid} → {self.caseid2.caseid}: {self.score}"
+
+
+

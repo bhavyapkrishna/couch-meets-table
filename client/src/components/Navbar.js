@@ -76,7 +76,8 @@ function Navbar() {
                     Couch Meets Table
                 </Link>
                 <div className="ms-auto me-3 d-flex gap-3">
-                    {(user.quizResponse.length > 0) ? (
+                    {["/swiping", "/matches", "/profile"].includes(pathname) && (
+                    // {(user.quizResponse.length > 0) ? (
                         <>
                             <Link
                                 to="/swiping"
@@ -84,10 +85,10 @@ function Navbar() {
                             >
                                 Swiping
                             </Link>
-                            <Link
-                                to="/profile"
-                                className={`text-white text-decoration-none ${pathname === "/profile" ? "fw-bold border-bottom border-white" : ""}`}
-                            >
+                            <Link to="/matches" className={`text-white text-decoration-none ${location.pathname === "/matches" ? "fw-bold border-bottom border-white" : ""}`}>
+                                Matches
+                            </Link>
+                            <Link to="/profile" className={`text-white text-decoration-none ${location.pathname === "/profile" ? "fw-bold border-bottom border-white" : ""}`}>
                                 Profile
                             </Link>
 
@@ -99,13 +100,15 @@ function Navbar() {
                                 Delete Account
                             </button>
                         </>
-                    ) : (
-                        <Link
-                            to="/login"
-                            className={`text-white text-decoration-none ${pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}
-                        >
-                            Log In
-                        </Link>
+                    )}
+                    // ) : (
+                    {["/", "/signup", "/login", "/quiz", "/createProfile"].includes(pathname) && (
+                        <>
+                            <Link to="/login" className={`text-white text-decoration-none ${location.pathname === "/login" ? "fw-bold border-bottom border-white" : ""}`}>
+                                Log In
+                            </Link>
+                        </>
+
                     )}
                 </div>
             </div>
