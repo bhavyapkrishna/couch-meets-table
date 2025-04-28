@@ -36,59 +36,44 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 # view that gets the scores
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_matchesUsers(request):
-    user_caseid = request.GET.get('caseid')
-    if not user_caseid:
-        return JsonResponse({"error": "caseid parameter required"}, status=400)
-    try:
-        user = CustomUser.objects.get(caseid=user_caseid)  # 🔥
-    except CustomUser.DoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
-
-    matches = UserScore.objects.filter(caseid1=user)  # 🔥
-    profiles = []
-    for match in matches:
-        try:
-            matched_user = CustomUser.objects.get(caseid=match.caseid2.caseid)  # 🔥 careful here
-            profile_data = {
-                "caseid": matched_user.caseid,
-                "first_name": matched_user.first_name,
-                "last_name": matched_user.last_name,
-                "age": matched_user.age,
-                "grade": matched_user.grade,
-                "major": matched_user.major,
-                "bio": matched_user.bio,
-                "score": match.score,
-            }
-            profiles.append(profile_data)
-        except CustomUser.DoesNotExist:
-            continue
-
-    return JsonResponse(profiles, safe=False)
+def get_matches_users(request):
+    user = request.user
+    scores = UserScore.objects.filter(caseid1=user).order_by("-score")
+    matches = []
+    for score in scores:
+        match_user = score.caseid2
+        dorms = UserDorm.objects.filter(userid=match_user.userid).values()
+        results = UserResults.objects.filter(userid=match_user.userid).values()
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def get_user_results(request):
-#     user_caseid = request.GET.get('caseid')
-#
-#     if not user_caseid:
-#         return JsonResponse({"error": "caseid parameter required"}, status=400)
-#
-#     try:
-#         result = UserResults.objects.get(userID=user_caseid)
-#         data = {
-#             "wakeTime": result.wakeTime,
-#             "sleepTime": result.sleepTime,
-#             "noise": result.noise,
-#             "messiness": result.messiness,
-#             "guests": result.guests,
-#             "inRoom": result.inRoom,
-#         }
-#         return JsonResponse(data)
-#     except UserResults.DoesNotExist:
-#         return JsonResponse({"error": "No results found"}, status=404)
+        # print("matched user", results, len(results))
 
+        options = {
+            "wakeTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
+            "sleepTime": ["Early", "Somewhat early", "Average", "Somewhat late", "Late"],
+            "noise": ["Silent", "Somewhat quiet", "Average", "Somewhat loud", "Loud"],
+            "messiness": ["Neat", "Somewhat neat", "Average", "Somewhat messy", "Messy"],
+            "guests": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"],
+            "inRoom": ["Rarely", "Somewhat rarely", "Sometimes", "Somewhat often", "Often"]}
+
+        matches.append({
+            'id': match_user.userid,
+            'grade': match_user.grade,
+            'name': f"{match_user.first_name} {match_user.last_name}",
+            'age': match_user.age,
+            'major': match_user.major,
+            'dorms': [dorm['dorm'] for dorm in dorms],
+            'bio': match_user.bio,
+            'matchPercentage': score.score,
+            'wakeup': options["wakeTime"][results[0]["wakeTime"]-1],
+            'sleepTime': options["sleepTime"][results[0]["sleepTime"]-1],
+            'noise': options["noise"][results[0]["noise"]-1],
+            'messiness': options["messiness"][results[0]["messiness"]-1],
+            'guests': options["guests"][results[0]["guests"]-1],
+            'inRoom': options["inRoom"][results[0]["inRoom"]-1],
+        })
+
+    return Response(matches)
 
 #view that gets all matches of logged in user (can change to top)
 @api_view(['GET'])
@@ -98,7 +83,7 @@ def get_matches(request):
 
     scores = UserScore.objects.filter(caseid1=user).order_by('-score')
 
-    print(f"Found {scores.count()} scores for user {user.caseid}")  # Add logging to see the results
+    # print(f"Found {scores.count()} scores for user {user.caseid}")  # Add logging to see the results
 
     matches = []
     for score in scores:
@@ -106,7 +91,7 @@ def get_matches(request):
         dorms = UserDorm.objects.filter(userid=match_user.userid).values()
 
         #reverse_score = UserScore.objects.filter(caseid1=match_user, caseid2=user, swiped=True).first()
-        print(f"Match found for {user.caseid} with {match_user.caseid}: {score.score}")
+        # print(f"Match found for {user.caseid} with {match_user.caseid}: {score.score}")
 
         #if reverse_score:
         matches.append({

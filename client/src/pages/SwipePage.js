@@ -9,123 +9,31 @@ const SwipingPage = () => {
     const [profiles, setProfiles] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // 🔵 Set your user case ID (who is swiping)
-    // const userCaseId = "abc3"; // (Change this based on your user later)
-
-    // getting the current case id
-    const [userCaseId, setUserCaseId] = useState("");
 
     useEffect(() => {
-        const accessToken = localStorage.getItem("access_token");
+        const fetchMatches = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/api/get_matches_users/", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                    },
+                });
 
-        if (!accessToken) {
-            console.error("No access token found");
-            return;
-        }
-
-        // 🔵 FIRST fetch the user's profile
-        fetch('http://127.0.0.1:8000/api/profile/', {
-            headers: {
-                "Authorization": `Bearer ${accessToken}`
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch profile');
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Fetched swipes:", data);
+                    setProfiles(data);
+                } else {
+                    console.error("Error fetching swipes:", response.statusText);
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Profile fetch data:", data);
-                setUserCaseId(data.caseid);  // Save caseid
-            })
-            .catch(error => console.error('Error fetching profile:', error));
+            } catch (error) {
+                console.error("Error fetching swipes:", error);
+            }
+        };
+
+        fetchMatches();
     }, []);
-
-// 🔵 AFTER userCaseId is set, fetch matches
-    useEffect(() => {
-        if (!userCaseId) return;  // Now safe to guard here
-
-        const accessToken = localStorage.getItem("access_token");
-
-        fetch(`http://127.0.0.1:8000/api/get_matchesUsers/?caseid=${userCaseId}`, {
-            headers: {
-                "Authorization": `Bearer ${accessToken}`
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch matches');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Fetched matches:", data);
-                setProfiles(data);
-            })
-            .catch(error => console.error('Error fetching matches:', error));
-    }, [userCaseId]);
-
-
-    // const [userCaseId, setUserCaseId] = useState("");
-    //
-    // useEffect(() => {
-    //     if (!userCaseId) return;
-    //
-    //     const accessToken = localStorage.getItem("access_token");
-    //
-    //     if (!accessToken) {
-    //         console.error("No access token found");
-    //         return;
-    //     }
-    //
-    //     fetch('http://127.0.0.1:8000/api/profile/', {
-    //         headers: {
-    //             "Authorization": `Bearer ${accessToken}`
-    //         }
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to fetch profile');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             console.log("Profile fetch data:", data);
-    //             console.log("Case ID received:", data.caseid);
-    //
-    //             console.log("Fetched user profile:", data);
-    //             setUserCaseId(data.caseid);  // <--- Set the user's caseid from backend
-    //         })
-    //         .catch(error => console.error('Error fetching profile:', error));
-    // }, []);
-    //
-    // console.log("current user", userCaseId)
-    //
-    //
-    //
-    //
-    // // 🔵 Fetch profiles from Django server
-    // useEffect(() => {
-    //     const accessToken = localStorage.getItem("access_token");  // 🔥 Grab token
-    //
-    //     fetch(`http://localhost:8000/api/get_matchesUsers/?caseid=${userCaseId}`, {
-    //         headers: {
-    //             "Authorization": `Bearer ${accessToken}`
-    //         }
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to fetch matches');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             console.log("Fetched matches:", data);
-    //             setProfiles(data);
-    //         })
-    //         .catch(error => console.error('Error fetching matches:', error));
-    // }, []);
 
 
     // Handle Swiping (Next Profile)
@@ -135,7 +43,8 @@ const SwipingPage = () => {
 
     // Get the current profile
     const profile = profiles[currentIndex];
-    console.log("profile", profile)
+
+
 
 
     if (!profile) {
@@ -175,23 +84,23 @@ const SwipingPage = () => {
 
                             {/* Info Section */}
                             <Col md={7}>
-                                <h3><strong>{profile.first_name} {profile.last_name}, {profile.age}</strong></h3>
-                                <h5 className="text-primary"><strong>{profile.score}%</strong></h5>
+                                <h3><strong>{profile.name}, {profile.age}</strong></h3>
+                                <h5 className="text-primary"><strong>{profile.matchPercentage}%</strong></h5>
 
                                 <p><strong>Grade:</strong> {profile.grade}</p>
                                 <p><strong>Major:</strong> {profile.major}</p>
-                                <p><strong>Dorm Preference:</strong> {profile.dorm}</p>
+                                <p><strong>Dorm Preference:</strong> {profile.dorms}</p>
 
                                 <hr />
 
-                                <p><strong>Wakes up at:</strong> {profile.wakesUp}</p>
-                                <p><strong>Sleeps at:</strong> {profile.sleepsAt}</p>
-                                <p><strong>Noise Level:</strong> {profile.noiseLevel}</p>
+                                <p><strong>Wakes up at:</strong> {profile.wakeup}</p>
+                                <p><strong>Sleeps at:</strong> {profile.sleepTime}</p>
+                                <p><strong>Noise Level:</strong> {profile.noise}</p>
                                 <p><strong>Messiness:</strong> {profile.messiness}</p>
 
                                 <p><strong>Guests in Room:</strong> {profile.guests}</p>
                                 <p><strong>In Room:</strong> {profile.inRoom}</p>
-                                <p><strong>Goes Out:</strong> {profile.goesOut}</p>
+                                {/*<p><strong>Goes Out:</strong> {profile.goesOut}</p>*/}
                             </Col>
                         </Card>
                     </Col>
