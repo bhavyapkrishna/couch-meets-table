@@ -4,7 +4,7 @@ from django.urls import reverse
 # Create your tests here.
 class RegisterUserViewTest(TestCase):
     def test_register_user_post(self):
-        url = reverse('register')  # Assuming the view is named 'register' in your urls.py
+        url = reverse('register')  
         data = {
             "caseid": "bpk31",
             "email": "bpk31@case.edu",
@@ -18,7 +18,7 @@ class RegisterUserViewTest(TestCase):
             "username": "bpk31@case.edu"
         }
         response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, 201)  # HTTP 201 means successful creation
+        self.assertEqual(response.status_code, 201)  
         self.assertIn('user_id', response.data)
 
     def test_register_user_get(self):

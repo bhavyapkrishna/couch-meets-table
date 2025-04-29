@@ -116,6 +116,7 @@ class UserImportant(models.Model):
         db_table = 'user_important'
         managed = False
 
+#user score model
 class UserScore(models.Model):
     scoreid = models.IntegerField(primary_key=True, db_column='scoreid')
     caseid1 = models.ForeignKey(

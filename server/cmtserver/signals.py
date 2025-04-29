@@ -16,7 +16,6 @@ def calculate_scores_background(instance):
     except UserImportant.DoesNotExist:
         return
 
-    # Compare against all existing users except the new one
     from django.contrib.auth import get_user_model
     User = get_user_model()
     othersUsers = User.objects.exclude(userid=instance.userid)
@@ -34,13 +33,12 @@ def calculate_scores_background(instance):
 
         score = determineCompatability(userPrefArray, currentUserResultsArr, userImpoArray)
         UserScore.objects.create(
-            caseid1=instance,  # new user
+            caseid1=instance,  
             caseid2=currentUser,
             score=score,
             swiped=False
         )
 
-        # Optional: also add reverse direction if you want mutual scores
         reverse_score = determineCompatability(currentUserIdealArr, userResultsArray, currentUserImpoArr)
         UserScore.objects.create(
             caseid1=currentUser,
@@ -51,6 +49,6 @@ def calculate_scores_background(instance):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def compute_scores_on_signup(sender, instance, created, **kwargs):
     if not created:
-        return  # Only run when user is first created
+        return 
     thread = threading.Thread(target=calculate_scores_background, args=(instance,))
     thread.start()
