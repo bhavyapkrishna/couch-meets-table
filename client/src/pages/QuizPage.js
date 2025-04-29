@@ -1,32 +1,44 @@
-import {useContext, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../UserProvider";
 
 // quiz questions with labels
 const questions = [
-  {text: "When do you usually wake up?",
-    labels: ["Early", "", "Average","", "Late"]},
-  {text: "When do you usually sleep?",
-    labels: ["Early", "", "Average","", "Late"]},
-  {text: "How quiet would you like your room to be?",
-    labels: ["Silent", "", "Average","", "Lively"]},
-  {text: "How clean would you like your room to be?",
-    labels: ["Clean", "", "Lived-in","", "Messy"]},
-  {text: "How often do you have guests?",
-    labels: ["Rarely", "", "Sometimes","", "Always"]},
-  {text: "How often will you be in your room?",
-    labels: ["Rarely", "", "Sometimes","", "Always"]},
+  {
+    text: "When do you usually wake up?",
+    labels: ["Early", "", "Average", "", "Late"]
+  },
+  {
+    text: "When do you usually sleep?",
+    labels: ["Early", "", "Average", "", "Late"]
+  },
+  {
+    text: "How quiet would you like your room to be?",
+    labels: ["Silent", "", "Average", "", "Lively"]
+  },
+  {
+    text: "How clean would you like your room to be?",
+    labels: ["Clean", "", "Lived-in", "", "Messy"]
+  },
+  {
+    text: "How often do you have guests?",
+    labels: ["Rarely", "", "Sometimes", "", "Always"]
+  },
+  {
+    text: "How often will you be in your room?",
+    labels: ["Rarely", "", "Sometimes", "", "Always"]
+  },
 ];
 
 const QuizPage = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
   const [responses, setResponses] = useState(
-    questions.map((q) => ({ 
-      self: {value:3, label:q.labels[2]}, //default
-      ideal: {value:3, label:q.labels[2]}, 
-      important: false 
+    questions.map((q) => ({
+      self: { value: 3, label: q.labels[2] }, //default
+      ideal: { value: 3, label: q.labels[2] },
+      important: false
     }))
   );
 
@@ -34,14 +46,13 @@ const QuizPage = () => {
 
   // updating response values
   const handleChange = (type, value) => {
-    const label = questions[currentQuestion].labels[value-1] || 'N/A';
+    const label = questions[currentQuestion].labels[value - 1] || 'N/A';
     const updatedResponses = [...responses];
-    /* if (type === "important") {
+    if (type === "important") {
       updatedResponses[currentQuestion].important = value;
     } else {
       updatedResponses[currentQuestion][type] = { value, label };
-    } */
-    updatedResponses[currentQuestion][type] = {value, label};
+    }
     setResponses(updatedResponses);
   };
 
@@ -72,7 +83,7 @@ const QuizPage = () => {
       {/* quiz card */}
       <div className="card p-4 text-center mt-5 border-0 custom-bg">
         <h1 className="h3 custom-txt">Roommate Quiz</h1>
-        <p> Question {currentQuestion+1}: {questions[currentQuestion].text}</p>
+        <p> Question {currentQuestion + 1}: {questions[currentQuestion].text}</p>
 
         {/* self */}
         <p>Your preference: </p>

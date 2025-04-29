@@ -31,13 +31,6 @@ const CreateProfilePage = () => {
         Senior: ["The Village", "STJ", "PMAs", "Hazel"],
     };
 
-    // if user has profile
-    useEffect(() => {
-        if (user?.profile) {
-            //setProfile(user.profile);
-        }
-    }, []);
-
     // text inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
