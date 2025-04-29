@@ -4,6 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
 
+#serializer for user quiz - results
 class UserResultsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserResults
@@ -12,6 +13,7 @@ class UserResultsSerializer(serializers.ModelSerializer):
             'userid': {'write_only': True}
         }
 
+#serializer for user quiz - ideal
 class UserIdealSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserIdeal
@@ -20,6 +22,7 @@ class UserIdealSerializer(serializers.ModelSerializer):
             'userid': {'write_only': True}
         }
 
+#serializer for user quiz - important
 class UserImportantSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserImportant
@@ -28,6 +31,7 @@ class UserImportantSerializer(serializers.ModelSerializer):
             'userid': {'write_only': True}
         }
 
+#serializer for user dorms
 class UserDormSerializer(serializers.ModelSerializer):
     model = UserDorm
     fields = ['dorm']
@@ -35,6 +39,7 @@ class UserDormSerializer(serializers.ModelSerializer):
             'userid': {'write_only': True}
     }
 
+#serializer for user info
 class CustomUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     results = UserResultsSerializer()
@@ -62,7 +67,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
             UserDorm.objects.create(userid=user, dorm=dorm)
 
         return user
-    
+
+#serializer for the user profile
 class UserProfileSerializer(serializers.ModelSerializer):
     results = serializers.SerializerMethodField()
     preferences = serializers.SerializerMethodField()
@@ -100,6 +106,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_media_url(self, obj):
         return settings.MEDIA_URL
 
+#serializer to get an auth token 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)

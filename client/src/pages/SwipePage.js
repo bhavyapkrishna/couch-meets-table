@@ -12,6 +12,7 @@ const SwipingPage = () => {
 
 
     useEffect(() => {
+        // fetch matches from api
         const fetchMatches = async () => {
             try {
                 const response = await fetch("http://localhost:8000/api/get_matches_users/", {
@@ -23,7 +24,6 @@ const SwipingPage = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Fetched swipes:", data);
                     setProfiles(data);
                 } else {
                     console.error("Error fetching swipes:", response.statusText);
@@ -36,16 +36,14 @@ const SwipingPage = () => {
         fetchMatches();
     }, []);
 
-    // Handle Swiping (Next Profile)
+    // Handle reject (left)
     const handleNo = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1));
 
     };
 
+    // handle yes (right, match)
     const handleYes = (caseid2) => {
-        console.log("case id 2", caseid2)
-        setCurrentIndex((prevIndex) => (prevIndex + 1));
-
         const accessToken = localStorage.getItem("access_token");
 
         fetch('http://127.0.0.1:8000/api/swipes_right/', {
@@ -64,24 +62,23 @@ const SwipingPage = () => {
                 }
                 return response.json();
             })
-            .then(data => {
-                console.log("Successfully updated swiped:", data);
-            })
             .catch(error => console.error('Error updating swiped:', error));
+            
+            setCurrentIndex((prevIndex) => (prevIndex + 1));
     };
 
     // Get the current profile
     const profile = profiles[currentIndex];
 
-    console.log(profile);
-
     let profilePhotoSource;
     if (profile && profile.profile_photo && profile.media_url) {
         profilePhotoSource = `${profile.media_url}${profile.profile_photo}`;
     } else {
+        // default
         profilePhotoSource = profilePic;
     }
 
+    // loading state
     if (profiles.length === 0) {
         return (
             <div className="d-flex flex-column min-vh-100">
@@ -97,6 +94,7 @@ const SwipingPage = () => {
             </div>
         );
     }
+    // out of matches
     else if (currentIndex >= profiles.length) {
         return (
             <div className="d-flex flex-column min-vh-100">
@@ -128,15 +126,6 @@ const SwipingPage = () => {
                         <Card className="p-4 border-0 shadow d-flex flex-row align-items-center">
                             {/* Image Section */}
                             <Col md={5} className="text-center">
-                                {/*<Image*/}
-                                {/*    src={profile.image}*/}
-                                {/*    rounded*/}
-                                {/*    fluid*/}
-                                {/*    className="border border-primary p-1"*/}
-                                {/*    style={{ maxWidth: "300px", height: "auto", borderRadius: "10px" }}*/}
-                                {/*    alt="Profile"*/}
-                                {/*/>*/}
-                                {/*<p className="text-muted mt-2">matched • {profile.id}</p>*/}
                                 <Image
                                     src={profilePhotoSource}
                                     rounded
@@ -165,14 +154,12 @@ const SwipingPage = () => {
 
                                 <p><strong>Guests in Room:</strong> {profile.guests}</p>
                                 <p><strong>In Room:</strong> {profile.inRoom}</p>
-                                {/*<p><strong>Goes Out:</strong> {profile.goesOut}</p>*/}
                             </Col>
                         </Card>
                     </Col>
 
                     {/* Accept Button */}
                     <Col xs={2} className="text-center">
-
                         <button className="rounded-circle p-4 custom-btn" onClick={() => handleYes(profile.caseid)}>
                             <FaCheck size={32} />
                         </button>

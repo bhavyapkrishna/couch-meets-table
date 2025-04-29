@@ -15,16 +15,19 @@ function App() {
   return (
       <UserProvider>
               <Routes>
+                  {/* public */}
                   <Route path="/" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/signup" element={<SignUpPage />} />
                   <Route path="/quiz" element={<QuizPage />} />
                   <Route path="/createProfile" element={<CreateProfilePage />} />
 
+                  {/* protected */}
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/swiping" element={<ProtectedRoute><SwipePage /></ProtectedRoute>} />
                   <Route path="/matches" element={<ProtectedRoute><MatchesPage /></ProtectedRoute>} />
                   
+                  {/* fallback */}
                   <Route path="*" element={<h2>404: Page Not Found</h2>} />
               </Routes>
       </UserProvider>

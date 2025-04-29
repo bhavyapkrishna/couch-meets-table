@@ -11,6 +11,7 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useContext(UserContext);
 
+    // fetches profile after login
     const fetchProfileWithAccessToken = async (accessToken) => {
         const response = await fetch("http://localhost:8000/api/profile/", {
             method: "GET",
@@ -53,6 +54,7 @@ const LoginPage = () => {
         };
     };
 
+    // handles user login
     const handleLogin = async () =>
     {
         if(!email.endsWith("@case.edu")) {
@@ -84,12 +86,9 @@ const LoginPage = () => {
     
                 navigate("/profile");
             } else {
-                const errorData = await response.json();
-                console.error("Login error:", errorData);
                 alert("Invalid email or password.");
             }
         } catch (error) {
-            console.error("There was an error!", error);
             alert("Error logging in.");
         }
     };
@@ -101,9 +100,11 @@ const LoginPage = () => {
     return (
        <div className="container-fluid custom-bg vh-100 d-flex flex-column justify-content-start pt-5">
             <Navbar />
+
             {/*Content*/}
             <div className="card p-4 text-center mt-5 border-0 custom-bg">
                 <h1 className="h3 custom-txt">Log In</h1>
+                {/* email */}
                 <input 
                     type="text" 
                     placeholder="CWRU Email" 
@@ -111,6 +112,7 @@ const LoginPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
+                {/* password */}
                 <input 
                     type={showPassword ? "text" : "password"}
                     placeholder="Password" 
@@ -118,6 +120,7 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+                {/* show/hide password button */}
                 <span
                     onMouseDown={setPasswordVisible}
                     onMouseUp={setPasswordVisible}
@@ -126,10 +129,10 @@ const LoginPage = () => {
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                 </span>
             </div>
+            {/* login button */}
             <div className="mt-3">
                 <button onClick={handleLogin} className="custom-btn">Log In</button>
             </div>
-            {/*<h1>hello, {user || "Guest"}!</h1>*/}
         </div>
     )
 }

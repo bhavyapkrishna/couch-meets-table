@@ -12,33 +12,37 @@ const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { user, setUser } = useContext(UserContext);
 
+    // form submission
     const handleSignUp = async (e) => {
         e.preventDefault();
     
+        // email valid
         if (!email.endsWith("@case.edu")) {
             alert("Please enter a valid CWRU email address");
             return;
         }
     
+        // password match
         if (password !== passwordCheck) {
             alert("Passwords do not match");
             return;
         }
 
         try {
+            // labels for quiz responses
             const labels = ['wakeTime', 'sleepTime', 'noise', 'messiness', 'guests', 'inRoom']
+            
+            // map responses to objects
             const resultsValues = user.quizResponse.map(q => q.self.value);
             const idealValues = user.quizResponse.map(q => q.ideal.value);
             const importantValues = user.quizResponse.map(q => q.important.value === undefined ? 0 : 1);
 
+            // create objects
             const results = Object.fromEntries(labels.map((label, index) => [label, resultsValues[index]]));
             const ideal = Object.fromEntries(labels.map((label, index) => [label, idealValues[index]]));
             const important = Object.fromEntries(labels.map((label, index) => [label, importantValues[index]]));
-
-            console.log("results: ", results)
-            console.log("preferences", ideal)
-            console.log("important", important)
             
+            // send to server
             const registerResponse = await fetch('http://localhost:8000/api/register/', {
                 method: 'POST',
                 headers: {
@@ -61,13 +65,14 @@ const SignUpPage = () => {
                 }),
             });
     
+            // check if successful
             if (!registerResponse.ok) {
                 const errorData = await registerResponse.json();
-                console.error('Error creating user:', errorData);
                 alert('Error creating user.');
                 return;
             }
-    
+
+            // login to get token after
             const tokenResponse = await fetch("http://localhost:8000/api/token/", {
                 method: "POST",
                 headers: {
@@ -76,6 +81,7 @@ const SignUpPage = () => {
                 body: JSON.stringify({ email, password }),
             });
     
+            // check if successful
             if (!tokenResponse.ok) {
                 alert("Login failed.");
                 return;
@@ -85,7 +91,8 @@ const SignUpPage = () => {
             localStorage.setItem("access_token", tokenData.access);
             localStorage.setItem("refresh_token", tokenData.refresh);
 
-            if (user.profile.profile_photo) { // Use the correct state name
+            // upload profile photo
+            if (user.profile.profile_photo) {
                 const form_data = new FormData();
                 form_data.append('profile_photo', user.profile.profile_photo);
 
@@ -97,13 +104,14 @@ const SignUpPage = () => {
                     body: form_data,
                 });
 
+                //error message
                 if (!profilePhotoResponse.ok) {
                     const errorData = await profilePhotoResponse.json();
-                    console.error('Error uploading profile photo:', errorData);
                     alert('Error uploading profile photo.');
                 }
             }
 
+            // fetch profile after successful login
             const profileResponse = await fetch("http://localhost:8000/api/profile/", {
                 method: "GET",
                 headers: {
@@ -112,19 +120,22 @@ const SignUpPage = () => {
                 },
             });
     
+            // error
             if (!profileResponse.ok) {
                 alert("Failed to fetch profile.");
                 return;
             }
     
             const userData = await profileResponse.json();
-    
+
+            // map profile to responses
             const quizResponse = labels.map((label) => ({
                 self: { label, value: userData.results[label] },
                 ideal: { label, value: userData.preferences[label] },
                 important: { label, value: userData.important[label] },
             }));
     
+            // set with fetched profile data and responses
             setUser({
                 profile: {
                     caseid: userData.caseid,
@@ -143,11 +154,11 @@ const SignUpPage = () => {
             navigate("/profile");
             
         } catch (error) {
-            console.error('There was an error!', error);
             alert('Error creating user.');
         }
     };
 
+    // toggle visibility
     const setPasswordVisible = () => {
         setShowPassword(!showPassword);
     };
@@ -158,6 +169,7 @@ const SignUpPage = () => {
             {/*Content*/}
             <div className="card p-4 text-center mt-5 border-0 custom-bg">
                 <h1 className="h3 custom-txt">Create Account</h1>
+                {/* email */}
                 <input 
                     type="text" 
                     placeholder="CWRU Email" 
@@ -165,6 +177,7 @@ const SignUpPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
+                {/* password */}
                 <input 
                     type={showPassword ? "text" : "password"}
                     placeholder="Password" 
@@ -179,6 +192,7 @@ const SignUpPage = () => {
                     onChange={(e) => setPasswordCheck(e.target.value)}
                     required
                 />
+                {/* show/hide password */}
                 <span
                     onMouseDown={setPasswordVisible}
                     onMouseUp={setPasswordVisible}
@@ -187,6 +201,7 @@ const SignUpPage = () => {
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                 </span>
             </div>
+            {/* submit button */}
             <div className="mt-3">
                 <button onClick={handleSignUp} className="custom-btn">Create Account</button>
             </div>

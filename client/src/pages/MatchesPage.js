@@ -3,6 +3,8 @@ import { UserContext } from "../UserProvider";
 import Navbar from "../components/Navbar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const MatchesPage = () => {
   const { user } = useContext(UserContext);
@@ -10,8 +12,9 @@ const MatchesPage = () => {
   const [matches, setMatches] = useState([]);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-//backend fetching
+// fetch matches from backend
   useEffect(() => {
     const fetchMatches = async () => {
       try {
@@ -24,34 +27,46 @@ const MatchesPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched matches:", data); 
           setMatches(data);
         } else {
-          console.error("Error fetching matches:", response.statusText);
+          alert("Error fetching matches. Please try again later.");
         }
       } catch (error) {
-        console.error("Error fetching matches:", error);
+        alert("An error occurred while fetching matches.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMatches();
   }, []);
 
-
-
+  // open modal when name clicked
   const handleNameClick = (match) => {
     setSelectedMatch(match);
     setShowModal(true);
   };
 
+  // close modal
   const handleClose = () => {
     setShowModal(false);
     setSelectedMatch(null);
   };
 
-  console.log("matches", matches)
-  if (!matches) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="d-flex flex-column min-vh-100">
+        <Navbar />
+        <Container fluid className="d-flex flex-grow-1 justify-content-center align-items-center">
+          <div className="d-flex flex-column align-items-center gap-3">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <h1 className="h3 custom-txt">Finding Matches...</h1>
+          </div>
+        </Container>
+      </div>
+    );
   }
 
   return (
@@ -61,7 +76,7 @@ const MatchesPage = () => {
         <h1 className="h3 custom-txt">Your Matches</h1>
         <p>Here are your top roommate matches:</p>
 
-        {/* Table */}
+        {/* Matches Table */}
         <div className="table-responsive mt-4">
           <table className="table table-hover text-center">
             <thead>
@@ -86,6 +101,7 @@ const MatchesPage = () => {
                         {match.name} (Age: {match.age})
                       </button>
                     </td>
+                    {/* Change colors based on percentage */}
                     <td>
                       <span
                         className={`badge fs-6 ${
@@ -116,7 +132,7 @@ const MatchesPage = () => {
                 <>
                   <p><strong>Age:</strong> {selectedMatch.age}</p>
                   <p><strong>Major:</strong> {selectedMatch.major}</p>
-                  <p><strong>Preferred Dorms:</strong> {selectedMatch.dorms.join(", ")}</p>
+                  <p><strong>Preferred Dorms:</strong> {selectedMatch.dorms?.join(", ") || "N/A"}</p>
                   <p><strong>Bio:</strong> {selectedMatch.bio}</p>
                   <p><strong>Wake Up Time:</strong> {selectedMatch.wakeup}</p>
                   <p><strong>Sleep Time:</strong> {selectedMatch.sleepTime}</p>
